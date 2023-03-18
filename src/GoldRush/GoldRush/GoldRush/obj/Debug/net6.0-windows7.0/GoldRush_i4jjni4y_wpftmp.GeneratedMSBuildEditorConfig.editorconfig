@@ -1,0 +1,11 @@
+is_global = true
+build_property.TargetFramework = net6.0-windows7.0
+build_property.TargetPlatformMinVersion = 7.0
+build_property.UsingMicrosoftNETSdkWeb = 
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = GoldRush_i4jjni4y_wpftmp
+build_property.ProjectDir = D:\lessons\SEM 4\STRATEGI ALGORITMA\TUBES\2\Tubes2_goldRush\src\GoldRush\GoldRush\GoldRush\
