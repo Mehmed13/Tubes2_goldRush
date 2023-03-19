@@ -1,13 +1,13 @@
 using System;
-
-
-namespace GraphNode
+namespace lib
 {
     class GraphNode
     {
         // Field
         private int value;
         private int visited;
+
+        private bool treasure;
         private GraphNode right;
         private GraphNode down;
         private GraphNode left;
@@ -18,6 +18,7 @@ namespace GraphNode
         { // default
             this.value = 0;
             this.visited = 0;
+            this.treasure = false;
             this.right = null;
             this.down = null;
             this.left = null;
@@ -28,6 +29,7 @@ namespace GraphNode
         { // value
             this.value = value;
             this.visited = 0;
+            this.treasure = false;
             this.right = null;
             this.down = null;
             this.left = null;
@@ -38,16 +40,18 @@ namespace GraphNode
         { // value, visited
             this.value = value;
             this.visited = visited;
+            this.treasure = false;
             this.right = null;
             this.down = null;
             this.left = null;
             this.up = null;
         }
 
-        public GraphNode(int value, int visited, GraphNode right, GraphNode down, GraphNode left, GraphNode up)
+        public GraphNode(int value, int visited, bool treasure, GraphNode right, GraphNode down, GraphNode left, GraphNode up)
         { // value, visited, right, down, left, up
             this.value = value;
             this.visited = visited;
+            this.treasure = treasure;
             this.right = right;
             this.down = down;
             this.left = left;
@@ -63,6 +67,11 @@ namespace GraphNode
         public int getVisited()
         {
             return this.visited;
+        }
+
+        public bool isTreasure()
+        {
+            return this.treasure;
         }
 
         public GraphNode getRight()
@@ -91,6 +100,11 @@ namespace GraphNode
         public void setVisited(int visited)
         {
             this.visited = visited;
+        }
+
+        public void setTreasure(bool treasure)
+        {
+            this.treasure = treasure;
         }
         public void setRight(GraphNode right)
         {

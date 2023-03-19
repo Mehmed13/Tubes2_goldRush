@@ -1,6 +1,10 @@
-class Utility {         
-    static void Main(string[] args)
+namespace lib
+{
+    public class Utility
     {
-        System.Console.WriteLine("Utility Algorithm!");
+        public static void Main(string[] args)
+        {
+            System.Console.WriteLine("Utility Algorithm!");
+        }
     }
 }
