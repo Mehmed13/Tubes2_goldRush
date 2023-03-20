@@ -191,6 +191,13 @@ namespace lib
             }
         }
 
+        public void resetVisitedNodes()
+        {
+            foreach (GraphNode node in this.graph)
+            {
+                node.setVisited(0);
+            }
+        }
 
         public void runDFSAlgorithm()
         {
@@ -206,6 +213,14 @@ namespace lib
 
             Route tempRoute = new Route();
             List<char> tempPath = new List<char>();
+            List<int> visitAccumulation = new List<int>(); // Menyimpan akumulasi jumlah visit
+            // Inisialisasi
+            foreach (GraphNode node in this.graph)
+            {
+                visitAccumulation.Add(node.getVisited());
+            }
+
+
             List<GraphNode> tempNodePath = new List<GraphNode>() { this.graph[0] };
             this.graph[0].setVisited(1); // Telah dikunjungi
             tempRoute.node = this.graph[0];
@@ -214,7 +229,7 @@ namespace lib
             tempRoute.remainingTreasures = remainingTreasures;
             this.stack.Push(tempRoute); // Push rute pertama
 
-            Console.WriteLine("X: " + this.stack.Peek().node.getValue().x.ToString() + " Y: " + this.stack.Peek().node.getValue().y);
+            // Console.WriteLine("X: " + this.stack.Peek().node.getValue().x.ToString() + " Y: " + this.stack.Peek().node.getValue().y);
 
             // Pengecekan tetangga untuk node pertama
             cekTetangga(this.graph[0], tempPath, tempNodePath, remainingTreasures, backAndForth);
@@ -222,63 +237,65 @@ namespace lib
             // Loop mencari semua treasures
             while (remainingTreasures != 0) // Akan looping hingga remaining treasures = 0
             {
-                if (!backAndForth) // Kasus Normal
+                // Pengecekan currentNode, yaitu Peek pada stack
+                GraphNode currentNode = new GraphNode();
+                currentNode = this.stack.Peek().node;
+                List<char> currentPath = new List<char>();
+                currentPath = this.stack.Peek().path;
+                List<GraphNode> currentNodePath = new List<GraphNode>();
+                currentNodePath = this.stack.Peek().nodePath;
+                int currentRemainingTreasures = this.stack.Peek().remainingTreasures;
+
+                foreach (char dir in currentPath)
                 {
-                    // Pengecekan currentNode, yaitu Peek pada stack
-                    GraphNode currentNode = new GraphNode();
-                    currentNode = this.stack.Peek().node;
-                    List<char> currentPath = new List<char>();
-                    currentPath = this.stack.Peek().path;
-                    List<GraphNode> currentNodePath = new List<GraphNode>();
-                    currentNodePath = this.stack.Peek().nodePath;
-                    int currentRemainingTreasures = this.stack.Peek().remainingTreasures;
+                    Console.Write(dir);
+                }
+                Console.Write(" ");
+                Console.WriteLine("X: " + currentNode.getValue().x.ToString() + " Y: " + currentNode.getValue().y);
+                Console.WriteLine(this.stack.Count);
+                Console.WriteLine("Remaining Treasures: " + currentRemainingTreasures.ToString());
 
-                    foreach (char dir in currentPath)
-                    {
-                        Console.Write(dir);
-                    }
-                    Console.Write(" ");
-                    Console.WriteLine("X: " + currentNode.getValue().x.ToString() + " Y: " + currentNode.getValue().y);
-                    Console.WriteLine(this.stack.Count);
+                if (currentNode.getVisited() > 0)
+                { // Jika sudah pernah dikunjungi, pop route dari stack
+                    Route currentRoute = this.stack.Pop();
+                }
+                else
+                {
+                    // Evaluasi currentNode
+                    currentNode.setVisited(currentNode.getVisited() + 1); // Increment numOfvisited
+                    if (currentNode.isTreasure())
+                    { // Jika merupakan treasure
+                        currentRemainingTreasures--;
 
-                    if (currentNode.getVisited() > 0)
-                    { // Jika sudah pernah dikunjungi, pop route dari stack
-                        Route currentRoute = this.stack.Pop();
-                        if (currentRoute.node.isTreasure())
-                        { // Terindikasi masuk backAndForth mode
-                            backAndForth = true;
-                            this.stack.Clear();
-                            this.stack.Push(currentRoute);
-                        }
-                    }
-                    else
-                    {
-                        // Evaluasi currentNode
-                        currentNode.setVisited(currentNode.getVisited() + 1); // Increment numOfvisited
-                        if (currentNode.isTreasure())
-                        { // Jika merupakan treasure
-                            currentRemainingTreasures--;
-                            if (currentRemainingTreasures == 0) // Jika DFS selesai
-                            {
-                                // Set remaining Treasures 0 dan tempPath, tempNodePath menjadi current
-                                remainingTreasures = 0;
-                                tempPath = currentPath;
-                                tempNodePath = currentNodePath;
-
-                                continue; // skip agar keluar loop
-                            }
+                        // Jika DFS belum selesai, lakukan resetting dan tambahkan visit ke akumulator
+                        currentNode.setTreasure(false);
+                        for (int i = 0; i < this.graph.Count; i++)
+                        {
+                            visitAccumulation[i] += this.graph[i].getVisited();
                         }
 
-                        // Pengecekan tetangga untuk node yang sedang dikunjungi
-                        cekTetangga(currentNode, currentPath, currentNodePath, currentRemainingTreasures, backAndForth);
-                    }
-                }
-                else // Masuk back and Forth mode
-                {
+                        resetVisitedNodes();
+                        Route currentRoute = new Route();
+                        currentRoute = this.stack.Pop();
+                        this.stack.Clear();
+                        this.stack.Push(currentRoute);
+                        if (currentRemainingTreasures == 0) // Jika DFS selesai
+                        {
+                            // Set remaining Treasures 0 dan tempPath, tempNodePath menjadi current
+                            remainingTreasures = 0;
+                            tempPath = currentPath;
+                            tempNodePath = currentNodePath;
 
-                    Console.WriteLine("Ga handle");
-                    break;
+                            continue; // skip agar keluar loop
+                        }
+                        currentRoute.node.setVisited(-1);
+                    }
+
+                    // Pengecekan tetangga untuk node yang sedang dikunjungi
+                    cekTetangga(currentNode, currentPath, currentNodePath, currentRemainingTreasures, backAndForth);
                 }
+
+
             }
 
 
@@ -287,6 +304,12 @@ namespace lib
             this.executionTime = watch.ElapsedMilliseconds; // get the execution time in ms
             this.path = tempPath;
             this.numOfNodesVisited = tempNodePath.Count;
+
+            // Masukkan kembali akumulasi visit pada setiap node
+            for (int i = 0; i < this.graph.Count; i++)
+            {
+                this.graph[i].setVisited(visitAccumulation[i]);
+            }
 
         }
 
