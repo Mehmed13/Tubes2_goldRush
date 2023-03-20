@@ -1,7 +1,7 @@
 using System;
 namespace lib
 {
-    class GraphNode
+    public class GraphNode
     {
         // Field
         private Coordinate position;
@@ -62,7 +62,7 @@ namespace lib
 
 
         // Getter
-        public Coordinate getValue()
+        public Coordinate getCoordinate()
         {
             return this.position;
         }
