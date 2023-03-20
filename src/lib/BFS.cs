@@ -211,6 +211,9 @@ namespace lib
 
 
             }//end while
+            // Finishing
+            watch.Stop();
+            this.executionTime = watch.ElapsedMilliseconds; // get the execution time in ms
             Console.WriteLine("Tidak dapat jalan menuju treasure");
 
 

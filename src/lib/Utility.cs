@@ -120,18 +120,18 @@ namespace lib
             List<GraphNode> graph = new List<GraphNode>() { node1, node2, node3, node4, node5, node6, node7, node8, node9, node10, node11, node12, node13, node14, node15 };
 
             // Creating DFS object
-            DFS cek = new DFS(3, graph);
-            cek.runDFSAlgorithm();
-            foreach (char dir in cek.getPath())
-            {
-                Console.Write(dir);
-            }
+            BFS cek = new BFS(3, graph);
+            cek.runBFSAlgorithm();
+            // foreach (char dir in cek.getPath())
+            // {
+            //     Console.Write(dir);
+            // }
 
-            Console.WriteLine("\nNum Visited Node");
-            for (int i = 0; i < graph.Count; i++)
-            {
-                Console.WriteLine("Node" + (i + 1).ToString() + ": " + cek.getGraph()[i].getVisited());
-            }
+            // Console.WriteLine("\nNum Visited Node");
+            // for (int i = 0; i < graph.Count; i++)
+            // {
+            //     Console.WriteLine("Node" + (i + 1).ToString() + ": " + cek.getGraph()[i].getVisited());
+            // }
 
         }
     }

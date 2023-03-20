@@ -4,8 +4,8 @@ namespace lib
 {
     class ElementQueue 
     {
-        private Route route;
-        private Matrix visitedNodes;
+        public Route route;
+        public Matrix visitedNodes;
 
         public ElementQueue(int row, int col, List<char> path, List<GraphNode> nodePath, GraphNode lastNode, int remainingTreasures){
             //construct route
