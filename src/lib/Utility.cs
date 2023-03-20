@@ -163,6 +163,7 @@ namespace lib
             {
                 Console.WriteLine(visitedNode.getCoordinate().x + " " + visitedNode.getCoordinate().y + "  :" + visitedNode.getVisited().ToString());
             }
+            Console.WriteLine("Num of visitedNodes: " + searchingDFS.getNumOfNodesVisited().ToString());
             Console.WriteLine("TimeExecution: " + searchingDFS.getExecutionTime().ToString() + "ms");
         }
 

@@ -413,7 +413,11 @@ namespace lib
             watch.Stop();
             this.executionTime = watch.ElapsedMilliseconds; // get the execution time in ms
             this.path = tempPath;
-            this.numOfNodesVisited = tempNodePath.Count;
+            this.numOfNodesVisited = 0;
+            foreach (GraphNode node in this.graph)
+            {
+                this.numOfNodesVisited += node.getVisited();
+            }
 
         }
 
