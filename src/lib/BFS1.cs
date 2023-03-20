@@ -67,7 +67,7 @@ namespace lib
 
         // Method
 
-        public void runBFSAlgorithm(int row, int col)
+        public void runBFS1Algorithm(int row, int col)
         {
             var watch = Stopwatch.StartNew(); // timer
             GraphNode tempStartNode = this.startGraph;
@@ -110,12 +110,12 @@ namespace lib
                     } 
                     else 
                     {
-                        headElement.visitedNodes.setElement(headElement.route.node.getValue().x, headElement.route.node.getValue().y, 1)
+                        headElement.visitedNodes.setElement(headElement.route.node.getCoordinate().x, headElement.route.node.getCoordinate().y, 1)
                     }
 
 
                     // RIGHT NODE
-                    if (!found && headElement.node.getRight() != null && headElement.visitedNodes.getElement(headElement.node.getRight().getValue().x, headElement.node.getRight().getValue().y) == 0)
+                    if (!found && headElement.node.getRight() != null && headElement.visitedNodes.getElement(headElement.node.getRight().getCoordinate().x, headElement.node.getRight().getCoordinate().y) == 0)
                     {
                     // Initialize new ElementQueue
                         ElementQueue newElement;
@@ -134,7 +134,7 @@ namespace lib
                     }
 
                     // DOWN NODE
-                    if (!found && headElement.node.getDown() != null && headElement.visitedNodes.getElement(headElement.node.getDown().getValue().x, headElement.node.getDown().getValue().y) == 0)
+                    if (!found && headElement.node.getDown() != null && headElement.visitedNodes.getElement(headElement.node.getDown().getCoordinate().x, headElement.node.getDown().getCoordinate().y) == 0)
                     {
                     // Initialize new ElementQueue
                         ElementQueue newElement;
@@ -153,7 +153,7 @@ namespace lib
                     }
 
                     // LEFT NODE
-                    if (!found && headElement.node.getLeft() != null && headElement.visitedNodes.getElement(headElement.node.getLeft().getValue().x, headElement.node.getLeft().getValue().y) == 0)
+                    if (!found && headElement.node.getLeft() != null && headElement.visitedNodes.getElement(headElement.node.getLeft().getCoordinate().x, headElement.node.getLeft().getCoordinate().y) == 0)
                     {
                     // Initialize new ElementQueue
                         ElementQueue newElement;
@@ -172,7 +172,7 @@ namespace lib
                     }
 
                     // UP NODE
-                    if (!found && headElement.node.getUp() != null && headElement.visitedNodes.getElement(headElement.node.getUp().getValue().x, headElement.node.getUp().getValue().y) == 0)
+                    if (!found && headElement.node.getUp() != null && headElement.visitedNodes.getElement(headElement.node.getUp().getCoordinate().x, headElement.node.getUp().getCoordinate().y) == 0)
                     {
                     // Initialize new ElementQueue
                         ElementQueue newElement;
