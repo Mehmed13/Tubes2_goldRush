@@ -30,8 +30,12 @@ namespace lib
                     {
                         numOfTreasures++;
                         GraphNode node = new GraphNode(new Coordinate(i, j), 0, true);
+
+                        Console.WriteLine(node.isTreasure());
                         graph.Add(node);
                         makeNodesRelation(node, graph);
+                        Console.WriteLine("Treasure at " + i + ", " + j);
+                        Console.WriteLine(graph[graph.Count - 1].isTreasure());
                     }
                     else if (matrixMap[i, j] == 'K') // Jika cell start
                     {
@@ -102,7 +106,12 @@ namespace lib
 
         public static void Main(string[] args)
         {
-            char[,] matrixMap = { { 'X', 'X', 'X', 'X' }, { 'R', 'K', 'R', 'T' }, { 'X', 'X', 'X', 'X' } };
+            char[,] matrixMap = {
+                { 'X', 'X', 'T', 'X','T', 'X', 'T', 'X', 'X'},
+                { 'X', 'X', 'R', 'X','R', 'X', 'R', 'X', 'X'},
+                { 'K', 'R', 'R', 'R','R', 'R', 'R', 'R', 'T'},
+                { 'X', 'X', 'R', 'X','R', 'X', 'R', 'X', 'X'},
+                { 'X', 'X', 'T', 'X','T', 'X', 'T', 'X', 'X'}};
             ArrayList graphData = getGraphData(matrixMap);
             List<GraphNode> graph = (List<GraphNode>)graphData[0];
             int numOfTreasures = (int)graphData[1];
@@ -111,6 +120,7 @@ namespace lib
                 Console.WriteLine("======================");
                 Console.WriteLine("Node: ");
                 Console.WriteLine(node.getCoordinate().x + " " + node.getCoordinate().y);
+                Console.WriteLine("Is Treasure: " + node.isTreasure().ToString());
                 Console.WriteLine("Tetangga: ");
 
                 if (node.getRight() != null)
@@ -137,6 +147,18 @@ namespace lib
                 Console.WriteLine("======================");
             }
             Console.WriteLine("Banyak Treasures: " + numOfTreasures.ToString());
+
+
+            DFS searchingDFS = new DFS(numOfTreasures, graph);
+            searchingDFS.runDFSAlgorithm();
+            Console.WriteLine("Path DFS: ");
+            List<char> pathDFS = searchingDFS.getPath();
+            for (int i = 0; i < pathDFS.Count; i++)
+            {
+                Console.Write(pathDFS[i]);
+                if (i != pathDFS.Count - 1)
+                    Console.Write("-");
+            }
         }
 
     }
