@@ -30,12 +30,8 @@ namespace lib
                     {
                         numOfTreasures++;
                         GraphNode node = new GraphNode(new Coordinate(i, j), 0, true);
-
-                        Console.WriteLine(node.isTreasure());
                         graph.Add(node);
                         makeNodesRelation(node, graph);
-                        Console.WriteLine("Treasure at " + i + ", " + j);
-                        Console.WriteLine(graph[graph.Count - 1].isTreasure());
                     }
                     else if (matrixMap[i, j] == 'K') // Jika cell start
                     {
@@ -115,38 +111,38 @@ namespace lib
             ArrayList graphData = getGraphData(matrixMap);
             List<GraphNode> graph = (List<GraphNode>)graphData[0];
             int numOfTreasures = (int)graphData[1];
-            foreach (GraphNode node in graph)
-            {
-                Console.WriteLine("======================");
-                Console.WriteLine("Node: ");
-                Console.WriteLine(node.getCoordinate().x + " " + node.getCoordinate().y);
-                Console.WriteLine("Is Treasure: " + node.isTreasure().ToString());
-                Console.WriteLine("Tetangga: ");
+            // foreach (GraphNode node in graph)
+            // {
+            //     Console.WriteLine("======================");
+            //     Console.WriteLine("Node: ");
+            //     Console.WriteLine(node.getCoordinate().x + " " + node.getCoordinate().y);
+            //     Console.WriteLine("Is Treasure: " + node.isTreasure().ToString());
+            //     Console.WriteLine("Tetangga: ");
 
-                if (node.getRight() != null)
-                {
-                    Console.Write("Kanan: ");
-                    Console.WriteLine(node.getRight().getCoordinate().x + " " + node.getRight().getCoordinate().y);
-                }
-                if (node.getDown() != null)
-                {
-                    Console.Write("Bawah: ");
-                    Console.WriteLine(node.getDown().getCoordinate().x + " " + node.getDown().getCoordinate().y);
-                }
-                if (node.getLeft() != null)
-                {
-                    Console.Write("Kiri: ");
-                    Console.WriteLine(node.getLeft().getCoordinate().x + " " + node.getLeft().getCoordinate().y);
-                }
-                if (node.getUp() != null)
-                {
-                    Console.Write("Atas: ");
-                    Console.WriteLine(node.getUp().getCoordinate().x + " " + node.getUp().getCoordinate().y);
-                }
+            //     if (node.getRight() != null)
+            //     {
+            //         Console.Write("Kanan: ");
+            //         Console.WriteLine(node.getRight().getCoordinate().x + " " + node.getRight().getCoordinate().y);
+            //     }
+            //     if (node.getDown() != null)
+            //     {
+            //         Console.Write("Bawah: ");
+            //         Console.WriteLine(node.getDown().getCoordinate().x + " " + node.getDown().getCoordinate().y);
+            //     }
+            //     if (node.getLeft() != null)
+            //     {
+            //         Console.Write("Kiri: ");
+            //         Console.WriteLine(node.getLeft().getCoordinate().x + " " + node.getLeft().getCoordinate().y);
+            //     }
+            //     if (node.getUp() != null)
+            //     {
+            //         Console.Write("Atas: ");
+            //         Console.WriteLine(node.getUp().getCoordinate().x + " " + node.getUp().getCoordinate().y);
+            //     }
 
-                Console.WriteLine("======================");
-            }
-            Console.WriteLine("Banyak Treasures: " + numOfTreasures.ToString());
+            //     Console.WriteLine("======================");
+            // }
+            // Console.WriteLine("Banyak Treasures: " + numOfTreasures.ToString());
 
 
             DFS searchingDFS = new DFS(numOfTreasures, graph);
@@ -159,6 +155,15 @@ namespace lib
                 if (i != pathDFS.Count - 1)
                     Console.Write("-");
             }
+
+            Console.WriteLine();
+            Console.WriteLine("Visited Node Sequence:");
+            List<GraphNode> visitedNodeSequence = searchingDFS.getVisitedNodeSequence();
+            foreach (GraphNode visitedNode in visitedNodeSequence)
+            {
+                Console.WriteLine(visitedNode.getCoordinate().x + " " + visitedNode.getCoordinate().y + "  :" + visitedNode.getVisited().ToString());
+            }
+            Console.WriteLine("TimeExecution: " + searchingDFS.getExecutionTime().ToString() + "ms");
         }
 
     }
