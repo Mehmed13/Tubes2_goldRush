@@ -1,13 +1,13 @@
 using System;
-
-
-namespace GraphNode
+namespace lib
 {
     class GraphNode
     {
         // Field
-        private int value;
+        private Coordinate position;
         private int visited;
+
+        private bool treasure;
         private GraphNode right;
         private GraphNode down;
         private GraphNode left;
@@ -16,38 +16,44 @@ namespace GraphNode
         // Constructor
         public GraphNode()
         { // default
-            this.value = 0;
+            this.position = null;
             this.visited = 0;
+            this.treasure = false;
             this.right = null;
             this.down = null;
             this.left = null;
             this.up = null;
         }
 
-        public GraphNode(int value)
-        { // value
-            this.value = value;
+        public GraphNode(Coordinate position)
+        { // position
+            this.position = position;
             this.visited = 0;
+            this.treasure = false;
+            this.treasure = false;
             this.right = null;
             this.down = null;
             this.left = null;
             this.up = null;
         }
 
-        public GraphNode(int value, int visited)
-        { // value, visited
-            this.value = value;
+        public GraphNode(Coordinate position, int visited, bool treasure)
+        { // position, visited
+            this.position = position;
             this.visited = visited;
+            this.treasure = treasure;
+            this.treasure = false;
             this.right = null;
             this.down = null;
             this.left = null;
             this.up = null;
         }
 
-        public GraphNode(int value, int visited, GraphNode right, GraphNode down, GraphNode left, GraphNode up)
-        { // value, visited, right, down, left, up
-            this.value = value;
+        public GraphNode(Coordinate position, int visited, bool treasure, GraphNode right, GraphNode down, GraphNode left, GraphNode up)
+        { // position, visited, right, down, left, up
+            this.position = position;
             this.visited = visited;
+            this.treasure = treasure;
             this.right = right;
             this.down = down;
             this.left = left;
@@ -56,13 +62,18 @@ namespace GraphNode
 
 
         // Getter
-        public int getValue()
+        public Coordinate getValue()
         {
-            return this.value;
+            return this.position;
         }
         public int getVisited()
         {
             return this.visited;
+        }
+
+        public bool isTreasure()
+        {
+            return this.treasure;
         }
 
         public GraphNode getRight()
@@ -84,13 +95,18 @@ namespace GraphNode
         }
 
         // Setter
-        public void setValue(int value)
+        public void setValue(Coordinate position)
         {
-            this.value = value;
+            this.position = position;
         }
         public void setVisited(int visited)
         {
             this.visited = visited;
+        }
+
+        public void setTreasure(bool treasure)
+        {
+            this.treasure = treasure;
         }
         public void setRight(GraphNode right)
         {
@@ -109,18 +125,59 @@ namespace GraphNode
             this.up = up;
         }
 
-        static void Main(string[] args)
+        public bool isNeighbourExist()
         {
-            GraphNode node1 = new GraphNode(1);
-            GraphNode node2 = new GraphNode();
-            GraphNode node3 = new GraphNode(3, 1);
-            GraphNode node4 = new GraphNode(4, 0, node1, node2, node3, null);
-            Console.WriteLine(node4.getValue());
-            Console.WriteLine(node4.getVisited());
-            Console.WriteLine(node4.getRight().getValue());
-            Console.WriteLine(node4.getDown().getValue());
-            Console.WriteLine(node4.getLeft().getValue());
-
+            return (this.right != null || this.down != null || this.left != null || this.up != null);
         }
+        public bool isNeighbourVisitAbleExist()
+        {
+            if (this.isNeighbourExist())
+            {
+                if (this.right != null)
+                {
+                    if (this.right.visited == 0)
+                    {
+                        return true;
+                    }
+                }
+                if (this.down != null)
+                {
+                    if (this.down.visited == 0)
+                    {
+                        return true;
+                    }
+                }
+                if (this.left != null)
+                {
+                    if (this.left.visited == 0)
+                    {
+                        return true;
+                    }
+                }
+                if (this.up != null)
+                {
+                    if (this.up.visited == 0)
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+            return false;
+        }
+
+        // static void Main(string[] args)
+        // {
+        //     GraphNode node1 = new GraphNode(1);
+        //     GraphNode node2 = new GraphNode();
+        //     GraphNode node3 = new GraphNode(3, 1);
+        //     GraphNode node4 = new GraphNode(4, 0, node1, node2, node3, null);
+        //     Console.WriteLine(node4.getValue());
+        //     Console.WriteLine(node4.getVisited());
+        //     Console.WriteLine(node4.getRight().getValue());
+        //     Console.WriteLine(node4.getDown().getValue());
+        //     Console.WriteLine(node4.getLeft().getValue());
+
+        // }
     }
 }
