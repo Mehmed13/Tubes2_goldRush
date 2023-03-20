@@ -125,6 +125,47 @@ namespace lib
             this.up = up;
         }
 
+        public bool isNeighbourExist()
+        {
+            return (this.right != null || this.down != null || this.left != null || this.up != null);
+        }
+        public bool isNeighbourVisitAbleExist()
+        {
+            if (this.isNeighbourExist())
+            {
+                if (this.right != null)
+                {
+                    if (this.right.visited == 0)
+                    {
+                        return true;
+                    }
+                }
+                if (this.down != null)
+                {
+                    if (this.down.visited == 0)
+                    {
+                        return true;
+                    }
+                }
+                if (this.left != null)
+                {
+                    if (this.left.visited == 0)
+                    {
+                        return true;
+                    }
+                }
+                if (this.up != null)
+                {
+                    if (this.up.visited == 0)
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+            return false;
+        }
+
         // static void Main(string[] args)
         // {
         //     GraphNode node1 = new GraphNode(1);
