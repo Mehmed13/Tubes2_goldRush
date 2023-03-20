@@ -23,6 +23,12 @@ namespace lib
 
             }
 
+        }   
+        public int getRow(){
+            return this.row;
+        }
+        public int getCol(){
+            return this.Col;
         }
 
         public int getElement(int row, int col) 
