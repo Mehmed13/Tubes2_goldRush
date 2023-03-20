@@ -5,7 +5,7 @@ namespace lib
     class ElementQueue 
     {
         private Route route;
-        private Matrix matrixOfVisitedNodes;
+        private Matrix visitedNodes;
 
         public ElementQueue(int row, int col, List<char> path, List<GraphNode> nodePath, GraphNode lastNode, int remainingTreasures){
             //construct route
@@ -15,7 +15,7 @@ namespace lib
             this.route.remainingTreasures = remainingTreasures;
 
             // construct matrix
-            this.matrixOfVisitedNodes = new Matrix(row, col);
+            this.visitedNodes = new Matrix(row, col);
             
             
         }
@@ -25,9 +25,9 @@ namespace lib
             return this.route;
         }
 
-        public Matrix getMatrixOfVisitedNodes()
+        public Matrix getVisitedNodes()
         {
-            return this.matrixOfVisitedNodes;
+            return this.visitedNodes;
         }
 
         // public void setRoute(Route route)
@@ -35,8 +35,8 @@ namespace lib
         //     this.route = route;
         // }
 
-        public void setMatrixOfVisitedNodes(int row, int col, int value){
-            this.matrixOfVisitedNodes.setElement(row,col,value);
+        public void setVisitedNodes(int row, int col, int value){
+            this.visitedNodes.setElement(row,col,value);
         }
     }   
 
