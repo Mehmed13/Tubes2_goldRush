@@ -70,12 +70,13 @@ namespace lib
         public void runBFSAlgorithm(int row, int col)
         {
             var watch = Stopwatch.StartNew(); // timer
+            GraphNode tempStartNode = this.startGraph;
             int remainingTreasures = this.numOfTreasures;
 
             while (remainingTreasures != 0) 
             {   
                 Matrix visited = Matrix(row, col);
-                ElementQueue firstElement = ElementQueue(row, col, {}, {startGraph}, startGraph, 0);
+                ElementQueue firstElement = ElementQueue(row, col, {}, {tempStartNode}, tempStartNode, 0);
                 queue.Enqueue(firstElement);
                 bool found = false;
                 while (!found) 
@@ -87,7 +88,6 @@ namespace lib
                     {
                         found = true;
                         finalPath.AddRange(headElement.route.path);
-                        remainingTreasures--;
                         if (remainingTreasures == 1) 
                         {
                             foreach (GraphNode n in headElement.route.nodePath) 
@@ -103,16 +103,19 @@ namespace lib
                                 n.setVisited(n.getVisited() + 1);
                             }
                         }
+                        tempStartNode = headElement.route.node; 
+                        remainingTreasures--;
+                        queue.Clear();
+
                     } 
                     else 
                     {
-                        // headElement.route.node.setVisited(headElement.route.node.getVisited()+1); // tambahin
                         headElement.visitedNodes.setElement(headElement.route.node.getValue().x, headElement.route.node.getValue().y, 1)
                     }
 
 
-
-                    if (!found && headElement.node.getRight() != null && headElement.visitedNodes.getElement(headElement.node.getRight().getValue().x, headElement.node.getLeft().getValue().y))
+                    // RIGHT NODE
+                    if (!found && headElement.node.getRight() != null && headElement.visitedNodes.getElement(headElement.node.getRight().getValue().x, headElement.node.getRight().getValue().y) == 0)
                     {
                     // Initialize new ElementQueue
                         ElementQueue newElement;
@@ -123,40 +126,82 @@ namespace lib
                         newElement.nodePath.Add(headElement.node.getRight());
 
                         newElement.node = headElement.node.getRight();
-                        
-                    // Check if the right node is treasure
-                        if (headElement.node.getRight().isTreasure())
-                        {
-                            found = True;
 
+                        newElement.visitedNodes = headElement.visitedNodes;
 
-                        }
+                    // Enqueue newElement to queue
+                        queue.Enqueue(newElement);
+                    }
 
+                    // DOWN NODE
+                    if (!found && headElement.node.getDown() != null && headElement.visitedNodes.getElement(headElement.node.getDown().getValue().x, headElement.node.getDown().getValue().y) == 0)
+                    {
+                    // Initialize new ElementQueue
+                        ElementQueue newElement;
+                        newElement.path = headElement.path;
+                        newElement.path.Add('D');
+
+                        newElement.nodePath = headElement.nodePath;
+                        newElement.nodePath.Add(headElement.node.getDown());
+
+                        newElement.node = headElement.node.getDown();
+
+                        newElement.visitedNodes = headElement.visitedNodes;
+
+                    // Enqueue newElement to queue
+                        queue.Enqueue(newElement);
+                    }
+
+                    // LEFT NODE
+                    if (!found && headElement.node.getLeft() != null && headElement.visitedNodes.getElement(headElement.node.getLeft().getValue().x, headElement.node.getLeft().getValue().y) == 0)
+                    {
+                    // Initialize new ElementQueue
+                        ElementQueue newElement;
+                        newElement.path = headElement.path;
+                        newElement.path.Add('L');
+
+                        newElement.nodePath = headElement.nodePath;
+                        newElement.nodePath.Add(headElement.node.getLeft());
+
+                        newElement.node = headElement.node.getLeft();
+
+                        newElement.visitedNodes = headElement.visitedNodes;
+
+                    // Enqueue newElement to queue
+                        queue.Enqueue(newElement);
+                    }
+
+                    // UP NODE
+                    if (!found && headElement.node.getUp() != null && headElement.visitedNodes.getElement(headElement.node.getUp().getValue().x, headElement.node.getUp().getValue().y) == 0)
+                    {
+                    // Initialize new ElementQueue
+                        ElementQueue newElement;
+                        newElement.path = headElement.path;
+                        newElement.path.Add('U');
+
+                        newElement.nodePath = headElement.nodePath;
+                        newElement.nodePath.Add(headElement.node.getUp());
+
+                        newElement.node = headElement.node.getUp();
+
+                        newElement.visitedNodes = headElement.visitedNodes;
+
+                    // Enqueue newElement to queue
+                        queue.Enqueue(newElement);
                     }
                     
-
-                    
-                } 
-
+                } // found
 
             }
 
-
-
-
+            Console.Write('Path menuju treasure: ');
+            foreach (char dir in this.finalPath)
+            {
+                Console.Write(dir);
+            }
+            Console.WriteLine("");
 
         }
-
-
-
-
-
-
-
-
-
-
-
 
     }
 }
