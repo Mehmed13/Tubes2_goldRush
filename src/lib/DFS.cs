@@ -1,18 +1,27 @@
 using System;
 using System.Diagnostics;
-using System.collections.Generic;
+using System.Collections.Generic;
 
 namespace lib
 {
     class DFS
     {
         // PRIORITAS DRIECTIONS : RIGHT, DOWN, LEFT, UP
-        // Belum handling kasus harus bolak balik
+        // Belum handling kasus harus bolak balik + deepclone nodePath : masih bitwise copy sepertinya
+        // Mekanisme 
+        // Normal Flow: DFS seperti biasa
+        // backAndForth Flow: DFS seperti biasa hingga ketemu node treasure tetapi udah dicek, pindah ke flow backAndForth
+        //                    stack dikosongkan dan disisakan satu saja, yaitu node treasure tetapi udah dicek wktu ganti mode
+        //                    Pengunjungan terhadap node yang sudah dikunjungi menjadi diperbolehkan dan dfs mencari treasure yang lain
+        //                    Hal ini masih mengandung bug saat ada 3 jalur bolak balik
+
+        //                    Maybe solved, dalam pikiranku, aku membayangkan setelah masuk backAndForth, batas maks dikunjungi itu jadi 2
+        //                    Sehingga tak perlu risaukan jika terjadi backAndForth Again, karena jalur yang akan dicari masih dalam satu route yang kontinu
         private List<char> path;
         private int numOfTreasures;
         private int numOfNodesVisited;
 
-        private long executionTime; // in ms
+        private double executionTime; // in ms
 
         private List<GraphNode> graph;
 
@@ -29,14 +38,14 @@ namespace lib
             this.stack = new Stack<Route>();
         }
 
-        public DFS(int numOftreasures, List<GraphNode> graph, Stack<Route> stack)
+        public DFS(int numOftreasures, List<GraphNode> graph)
         {
             this.path = new List<char>();
             this.numOfTreasures = numOftreasures;
             this.numOfNodesVisited = 0;
             this.executionTime = 0;
             this.graph = graph;
-            this.stack = stack;
+            this.stack = new Stack<Route>();
         }
 
         // Getter
@@ -92,18 +101,110 @@ namespace lib
         }
 
         // Method
+
+        // Melakukan pengecekan untuk semua tetangga pada currentNode
+        private void cekTetangga(GraphNode currentNode, List<char> currentPath, List<GraphNode> currentNodePath, int currentRemainingTreasures, bool backAndForth)
+        {
+            int maxVisited;
+            if (backAndForth)
+            {
+                maxVisited = 2;
+            }
+            else
+            {
+                maxVisited = 1;
+            }
+
+            // Tambahkan tetangga yang belum pernah visited ke dalam stack
+            // Pada stack, prioritas tertinggi ditambahkan terakhir
+
+            // Tetangga Atas
+            GraphNode upNeighbour = currentNode.getUp();
+            if (upNeighbour != null) // Tetangga atas
+            {
+                if (upNeighbour.getVisited() < maxVisited)
+                {
+                    Route tempUpRoute = new Route();
+                    tempUpRoute.node = upNeighbour;
+                    tempUpRoute.path = new List<char>(currentPath);
+                    tempUpRoute.path.Add('U');
+                    tempUpRoute.nodePath = new List<GraphNode>(currentNodePath);
+                    tempUpRoute.nodePath.Add(upNeighbour);
+                    tempUpRoute.remainingTreasures = currentRemainingTreasures;
+
+                    this.stack.Push(tempUpRoute);
+                }
+            }
+
+            // Tetangga Kiri
+            GraphNode leftNeighbour = currentNode.getLeft();
+            if (leftNeighbour != null) // Tetangga kiri
+            {
+                if (leftNeighbour.getVisited() < maxVisited)
+                {
+                    Route tempLeftRoute = new Route();
+                    tempLeftRoute.node = leftNeighbour;
+                    tempLeftRoute.path = new List<char>(currentPath);
+                    tempLeftRoute.path.Add('L');
+                    tempLeftRoute.nodePath = new List<GraphNode>(currentNodePath);
+                    tempLeftRoute.nodePath.Add(leftNeighbour);
+                    tempLeftRoute.remainingTreasures = currentRemainingTreasures;
+
+                    this.stack.Push(tempLeftRoute);
+                }
+            }
+
+            // Tetangga Bawah
+            GraphNode downNeighbour = currentNode.getDown();
+            if (downNeighbour != null) // Tetangga bawah
+            {
+                if (downNeighbour.getVisited() < maxVisited)
+                {
+                    Route tempDownRoute = new Route();
+                    tempDownRoute.node = downNeighbour;
+                    tempDownRoute.path = new List<char>(currentPath);
+                    tempDownRoute.path.Add('D');
+                    tempDownRoute.nodePath = new List<GraphNode>(currentNodePath);
+                    tempDownRoute.nodePath.Add(downNeighbour);
+                    tempDownRoute.remainingTreasures = currentRemainingTreasures;
+
+                    this.stack.Push(tempDownRoute);
+                }
+            }
+
+            // Tetangga Kanan
+            GraphNode rightNeighbour = currentNode.getRight();
+            if (rightNeighbour != null) // Tetangga Kanan
+            {
+                if (rightNeighbour.getVisited() < maxVisited)
+                {
+                    Route tempRightRoute = new Route();
+                    tempRightRoute.node = rightNeighbour;
+                    tempRightRoute.path = new List<char>(currentPath);
+                    tempRightRoute.path.Add('R');
+                    tempRightRoute.nodePath = new List<GraphNode>(currentNodePath);
+                    tempRightRoute.nodePath.Add(rightNeighbour);
+                    tempRightRoute.remainingTreasures = currentRemainingTreasures;
+
+                    this.stack.Push(tempRightRoute);
+                }
+            }
+        }
+
+
         public void runDFSAlgorithm()
         {
             // Inisialization
 
             var watch = Stopwatch.StartNew(); // timer
+            bool backAndForth = false;
             int remainingTreasures = this.numOfTreasures;
             if (this.graph[0].isTreasure())
             {
                 remainingTreasures--;
             }
 
-            Route tempRoute;
+            Route tempRoute = new Route();
             List<char> tempPath = new List<char>();
             List<GraphNode> tempNodePath = new List<GraphNode>() { this.graph[0] };
             this.graph[0].setVisited(1); // Telah dikunjungi
@@ -111,23 +212,44 @@ namespace lib
             tempRoute.nodePath = tempNodePath;
             tempRoute.path = tempPath;
             tempRoute.remainingTreasures = remainingTreasures;
-            this.stack.Push(tempRoute);
+            this.stack.Push(tempRoute); // Push rute pertama
 
-            // Loop
+            Console.WriteLine("X: " + this.stack.Peek().node.getValue().x.ToString() + " Y: " + this.stack.Peek().node.getValue().y);
 
+            // Pengecekan tetangga untuk node pertama
+            cekTetangga(this.graph[0], tempPath, tempNodePath, remainingTreasures, backAndForth);
+
+            // Loop mencari semua treasures
             while (remainingTreasures != 0) // Akan looping hingga remaining treasures = 0
             {
-                if (this.stack.Count > 0) // Kasus Normal
+                if (!backAndForth) // Kasus Normal
                 {
                     // Pengecekan currentNode, yaitu Peek pada stack
+                    GraphNode currentNode = new GraphNode();
                     currentNode = this.stack.Peek().node;
+                    List<char> currentPath = new List<char>();
                     currentPath = this.stack.Peek().path;
+                    List<GraphNode> currentNodePath = new List<GraphNode>();
                     currentNodePath = this.stack.Peek().nodePath;
-                    currentRemainingTreasures = this.stack.Peek().remainingTreasures;
+                    int currentRemainingTreasures = this.stack.Peek().remainingTreasures;
+
+                    foreach (char dir in currentPath)
+                    {
+                        Console.Write(dir);
+                    }
+                    Console.Write(" ");
+                    Console.WriteLine("X: " + currentNode.getValue().x.ToString() + " Y: " + currentNode.getValue().y);
+                    Console.WriteLine(this.stack.Count);
 
                     if (currentNode.getVisited() > 0)
                     { // Jika sudah pernah dikunjungi, pop route dari stack
                         Route currentRoute = this.stack.Pop();
+                        if (currentRoute.node.isTreasure())
+                        { // Terindikasi masuk backAndForth mode
+                            backAndForth = true;
+                            this.stack.Clear();
+                            this.stack.Push(currentRoute);
+                        }
                     }
                     else
                     {
@@ -147,77 +269,15 @@ namespace lib
                             }
                         }
 
-                        // Tambahkan tetangga yang belum pernah visited ke dalam stack
-                        // Pada stack, prioritas tertinggi ditambahkan terakhir
-
-                        // Tetangga Atas
-                        GraphNode upNeighbour = currentNode.getUp();
-                        if (upNeighbour != null) // Tetangga atas
-                        {
-                            if (upNeighbour.getVisited() == 0)
-                            {
-                                Route tempUpRoute;
-                                tempUpRoute.node = upNeighbour;
-                                tempUpRoute.path = currentPath.Add('U');
-                                tempUpRoute.nodePath = currentNodePath.Add(upNeighbour);
-                                tempUpRoute.remainingTreasures = currentRemainingTreasures;
-
-                                this.stack.Push(tempUpRoute);
-                            }
-                        }
-
-                        // Tetangga Kiri
-                        GraphNode leftNeighbour = currentNode.getLeft();
-                        if (leftNeighbour != null) // Tetangga atas
-                        {
-                            if (leftNeighbour.getVisited() == 0)
-                            {
-                                Route tempLeftRoute;
-                                tempLeftRoute.node = leftNeighbour;
-                                tempLeftRoute.path = currentPath.Add('L');
-                                tempLeftRoute.nodePath = currentNodePath.Add(leftNeighbour);
-                                tempLeftRoute.remainingTreasures = currentRemainingTreasures;
-
-                                this.stack.Push(tempLeftRoute);
-                            }
-                        }
-
-                        // Tetangga Bawah
-                        GraphNode downNeighbour = currentNode.getDown();
-                        if (downNeighbour != null) // Tetangga atas
-                        {
-                            if (downNeighbour.getVisited() == 0)
-                            {
-                                Route tempDownRoute;
-                                tempDownRoute.node = downNeighbour;
-                                tempDownRoute.path = currentPath.Add('L');
-                                tempDownRoute.nodePath = currentNodePath.Add(downNeighbour);
-                                tempDownRoute.remainingTreasures = currentRemainingTreasures;
-
-                                this.stack.Push(tempDownRoute);
-                            }
-                        }
-
-                        // Tetangga Kanan
-                        GraphNode rightNeighbour = currentNode.getRight();
-                        if (rightNeighbour != null) // Tetangga atas
-                        {
-                            if (rightNeighbour.getVisited() == 0)
-                            {
-                                Route tempRightRoute;
-                                tempRightRoute.node = rightNeighbour;
-                                tempRightRoute.path = currentPath.Add('L');
-                                tempRightRoute.nodePath = currentNodePath.Add(rightNeighbour);
-                                tempRightRoute.remainingTreasures = currentRemainingTreasures;
-
-                                this.stack.Push(tempRightRoute);
-                            }
-                        }
+                        // Pengecekan tetangga untuk node yang sedang dikunjungi
+                        cekTetangga(currentNode, currentPath, currentNodePath, currentRemainingTreasures, backAndForth);
                     }
                 }
-                else
-                { // Jika sudah dicek semua tetapi belum menemukan semua treasures
+                else // Masuk back and Forth mode
+                {
 
+                    Console.WriteLine("Ga handle");
+                    break;
                 }
             }
 
@@ -230,9 +290,10 @@ namespace lib
 
         }
 
-        static void Main(string[] args)
-        {
-            System.Console.WriteLine("DFS Algorithm!");
-        }
+        // static void Main(string[] args)
+        // {
+        //     System.Console.WriteLine("DFS Algorithm!");
+
+        // }
     }
 }

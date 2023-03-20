@@ -4,7 +4,7 @@ namespace lib
     class GraphNode
     {
         // Field
-        private int value;
+        private Coordinate position;
         private int visited;
 
         private bool treasure;
@@ -16,7 +16,7 @@ namespace lib
         // Constructor
         public GraphNode()
         { // default
-            this.value = 0;
+            this.position = null;
             this.visited = 0;
             this.treasure = false;
             this.right = null;
@@ -25,10 +25,11 @@ namespace lib
             this.up = null;
         }
 
-        public GraphNode(int value)
-        { // value
-            this.value = value;
+        public GraphNode(Coordinate position)
+        { // position
+            this.position = position;
             this.visited = 0;
+            this.treasure = false;
             this.treasure = false;
             this.right = null;
             this.down = null;
@@ -36,10 +37,11 @@ namespace lib
             this.up = null;
         }
 
-        public GraphNode(int value, int visited)
-        { // value, visited
-            this.value = value;
+        public GraphNode(Coordinate position, int visited, bool treasure)
+        { // position, visited
+            this.position = position;
             this.visited = visited;
+            this.treasure = treasure;
             this.treasure = false;
             this.right = null;
             this.down = null;
@@ -47,9 +49,9 @@ namespace lib
             this.up = null;
         }
 
-        public GraphNode(int value, int visited, bool treasure, GraphNode right, GraphNode down, GraphNode left, GraphNode up)
-        { // value, visited, right, down, left, up
-            this.value = value;
+        public GraphNode(Coordinate position, int visited, bool treasure, GraphNode right, GraphNode down, GraphNode left, GraphNode up)
+        { // position, visited, right, down, left, up
+            this.position = position;
             this.visited = visited;
             this.treasure = treasure;
             this.right = right;
@@ -60,9 +62,9 @@ namespace lib
 
 
         // Getter
-        public int getValue()
+        public Coordinate getValue()
         {
-            return this.value;
+            return this.position;
         }
         public int getVisited()
         {
@@ -93,9 +95,9 @@ namespace lib
         }
 
         // Setter
-        public void setValue(int value)
+        public void setValue(Coordinate position)
         {
-            this.value = value;
+            this.position = position;
         }
         public void setVisited(int visited)
         {
@@ -123,18 +125,18 @@ namespace lib
             this.up = up;
         }
 
-        static void Main(string[] args)
-        {
-            GraphNode node1 = new GraphNode(1);
-            GraphNode node2 = new GraphNode();
-            GraphNode node3 = new GraphNode(3, 1);
-            GraphNode node4 = new GraphNode(4, 0, node1, node2, node3, null);
-            Console.WriteLine(node4.getValue());
-            Console.WriteLine(node4.getVisited());
-            Console.WriteLine(node4.getRight().getValue());
-            Console.WriteLine(node4.getDown().getValue());
-            Console.WriteLine(node4.getLeft().getValue());
+        // static void Main(string[] args)
+        // {
+        //     GraphNode node1 = new GraphNode(1);
+        //     GraphNode node2 = new GraphNode();
+        //     GraphNode node3 = new GraphNode(3, 1);
+        //     GraphNode node4 = new GraphNode(4, 0, node1, node2, node3, null);
+        //     Console.WriteLine(node4.getValue());
+        //     Console.WriteLine(node4.getVisited());
+        //     Console.WriteLine(node4.getRight().getValue());
+        //     Console.WriteLine(node4.getDown().getValue());
+        //     Console.WriteLine(node4.getLeft().getValue());
 
-        }
+        // }
     }
 }
