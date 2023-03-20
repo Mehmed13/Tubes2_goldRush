@@ -28,7 +28,7 @@ namespace lib
             return this.row;
         }
         public int getCol(){
-            return this.Col;
+            return this.col;
         }
 
         public int getElement(int row, int col) 

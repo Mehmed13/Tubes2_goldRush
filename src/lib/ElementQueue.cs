@@ -1,4 +1,4 @@
-using System.collections.Generic;
+using System.Collections.Generic;
 using System;
 namespace lib
 {
@@ -7,8 +7,13 @@ namespace lib
         public Route route;
         public Matrix visitedNodes;
 
+        public ElementQueue(){
+            // nothing
+        }
+        
         public ElementQueue(int row, int col, List<char> path, List<GraphNode> nodePath, GraphNode lastNode, int remainingTreasures){
             //construct route
+            this.route = new Route();
             this.route.path = path;
             this.route.nodePath = nodePath;
             this.route.node = lastNode;
@@ -35,7 +40,8 @@ namespace lib
         //     this.route = route;
         // }
 
-        public void setVisitedNodes(int row, int col, int value){
+        public void setVisitedNodes(int row, int col, int value)
+        {
             this.visitedNodes.setElement(row,col,value);
         }
     }   

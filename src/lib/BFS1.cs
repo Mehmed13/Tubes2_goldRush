@@ -1,6 +1,6 @@
 using System;
 using System.Diagnostics;
-using System.collections.Generic;
+using System.Collections.Generic;
 
 namespace lib
 {
@@ -8,14 +8,14 @@ namespace lib
     {
         private List<char> finalPath;
         private int numOfTreasures;
-        private long executionTime;
+        private double executionTime;
         private GraphNode startGraph;
         private Queue<ElementQueue> queue;
 
         public BFS1(int numOfTreasures, GraphNode startGraph) 
         {
             this.finalPath = new List<char>();
-            this.numOfTreasures = numOftreasures;
+            this.numOfTreasures = numOfTreasures;
             this.executionTime = 0;
             this.startGraph = startGraph;
             this.queue = new Queue<ElementQueue>();
@@ -75,8 +75,12 @@ namespace lib
 
             while (remainingTreasures != 0) 
             {   
-                Matrix visited = Matrix(row, col);
-                ElementQueue firstElement = ElementQueue(row, col, {}, {tempStartNode}, tempStartNode, 0);
+                Matrix visited = new Matrix(row, col);
+                List<char> newPath = new List<char>();
+                List<GraphNode> newNodePath = new List<GraphNode>();
+                newNodePath.Add(tempStartNode);
+
+                ElementQueue firstElement = new ElementQueue(row, col, newPath, newNodePath, tempStartNode, 0);
                 queue.Enqueue(firstElement);
                 bool found = false;
                 while (!found) 
@@ -98,9 +102,9 @@ namespace lib
                         } 
                         else 
                         {
-                            for (int i = 0; i < headElement.route.nodePath - 2; i++)  // the last element is considered not visited because it'll be done in the next iteration
+                            for (int i = 0; i < headElement.route.nodePath.Count - 2; i++)  // the last element is considered not visited because it'll be done in the next iteration
                             {
-                                n.setVisited(n.getVisited() + 1);
+                                headElement.route.nodePath[i].setVisited(headElement.route.nodePath[i].getVisited() + 1);
                             }
                         }
                         tempStartNode = headElement.route.node; 
@@ -110,22 +114,22 @@ namespace lib
                     } 
                     else 
                     {
-                        headElement.visitedNodes.setElement(headElement.route.node.getCoordinate().x, headElement.route.node.getCoordinate().y, 1)
+                        headElement.visitedNodes.setElement(headElement.route.node.getCoordinate().x, headElement.route.node.getCoordinate().y, 1);
                     }
 
 
                     // RIGHT NODE
-                    if (!found && headElement.node.getRight() != null && headElement.visitedNodes.getElement(headElement.node.getRight().getCoordinate().x, headElement.node.getRight().getCoordinate().y) == 0)
+                    if (!found && headElement.route.node.getRight() != null && headElement.visitedNodes.getElement(headElement.route.node.getRight().getCoordinate().x, headElement.route.node.getRight().getCoordinate().y) == 0)
                     {
                     // Initialize new ElementQueue
-                        ElementQueue newElement;
-                        newElement.path = headElement.path;
-                        newElement.path.Add('R');
+                        ElementQueue newElement = new ElementQueue();
+                        newElement.route.path = headElement.route.path;
+                        newElement.route.path.Add('R');
 
-                        newElement.nodePath = headElement.nodePath;
-                        newElement.nodePath.Add(headElement.node.getRight());
+                        newElement.route.nodePath = headElement.route.nodePath;
+                        newElement.route.nodePath.Add(headElement.route.node.getRight());
 
-                        newElement.node = headElement.node.getRight();
+                        newElement.route.node = headElement.route.node.getRight();
 
                         newElement.visitedNodes = headElement.visitedNodes;
 
@@ -134,17 +138,17 @@ namespace lib
                     }
 
                     // DOWN NODE
-                    if (!found && headElement.node.getDown() != null && headElement.visitedNodes.getElement(headElement.node.getDown().getCoordinate().x, headElement.node.getDown().getCoordinate().y) == 0)
+                    if (!found && headElement.route.node.getDown() != null && headElement.visitedNodes.getElement(headElement.route.node.getDown().getCoordinate().x, headElement.route.node.getDown().getCoordinate().y) == 0)
                     {
                     // Initialize new ElementQueue
-                        ElementQueue newElement;
-                        newElement.path = headElement.path;
-                        newElement.path.Add('D');
+                        ElementQueue newElement = new ElementQueue();
+                        newElement.route.path = headElement.route.path;
+                        newElement.route.path.Add('D');
 
-                        newElement.nodePath = headElement.nodePath;
-                        newElement.nodePath.Add(headElement.node.getDown());
+                        newElement.route.nodePath = headElement.route.nodePath;
+                        newElement.route.nodePath.Add(headElement.route.node.getDown());
 
-                        newElement.node = headElement.node.getDown();
+                        newElement.route.node = headElement.route.node.getDown();
 
                         newElement.visitedNodes = headElement.visitedNodes;
 
@@ -153,17 +157,17 @@ namespace lib
                     }
 
                     // LEFT NODE
-                    if (!found && headElement.node.getLeft() != null && headElement.visitedNodes.getElement(headElement.node.getLeft().getCoordinate().x, headElement.node.getLeft().getCoordinate().y) == 0)
+                    if (!found && headElement.route.node.getLeft() != null && headElement.visitedNodes.getElement(headElement.route.node.getLeft().getCoordinate().x, headElement.route.node.getLeft().getCoordinate().y) == 0)
                     {
                     // Initialize new ElementQueue
-                        ElementQueue newElement;
-                        newElement.path = headElement.path;
-                        newElement.path.Add('L');
+                        ElementQueue newElement = new ElementQueue();
+                        newElement.route.path = headElement.route.path;
+                        newElement.route.path.Add('L');
 
-                        newElement.nodePath = headElement.nodePath;
-                        newElement.nodePath.Add(headElement.node.getLeft());
+                        newElement.route.nodePath = headElement.route.nodePath;
+                        newElement.route.nodePath.Add(headElement.route.node.getLeft());
 
-                        newElement.node = headElement.node.getLeft();
+                        newElement.route.node = headElement.route.node.getLeft();
 
                         newElement.visitedNodes = headElement.visitedNodes;
 
@@ -172,17 +176,17 @@ namespace lib
                     }
 
                     // UP NODE
-                    if (!found && headElement.node.getUp() != null && headElement.visitedNodes.getElement(headElement.node.getUp().getCoordinate().x, headElement.node.getUp().getCoordinate().y) == 0)
+                    if (!found && headElement.route.node.getUp() != null && headElement.visitedNodes.getElement(headElement.route.node.getUp().getCoordinate().x, headElement.route.node.getUp().getCoordinate().y) == 0)
                     {
                     // Initialize new ElementQueue
-                        ElementQueue newElement;
-                        newElement.path = headElement.path;
-                        newElement.path.Add('U');
+                        ElementQueue newElement = new ElementQueue();
+                        newElement.route.path = headElement.route.path;
+                        newElement.route.path.Add('U');
 
-                        newElement.nodePath = headElement.nodePath;
-                        newElement.nodePath.Add(headElement.node.getUp());
+                        newElement.route.nodePath = headElement.route.nodePath;
+                        newElement.route.nodePath.Add(headElement.route.node.getUp());
 
-                        newElement.node = headElement.node.getUp();
+                        newElement.route.node = headElement.route.node.getUp();
 
                         newElement.visitedNodes = headElement.visitedNodes;
 
@@ -197,14 +201,14 @@ namespace lib
             watch.Stop();
             this.executionTime = watch.ElapsedMilliseconds; 
 
-            Console.Write('Path menuju treasure: ');
+            Console.Write("Path menuju treasure: ");
             foreach (char dir in this.finalPath)
             {
                 Console.Write(dir);
             }
             Console.WriteLine("");
 
-            Console.WriteLine('Waktu: ', this.executionTime);
+            Console.WriteLine("Waktu: ", this.executionTime);
         }
 
     }

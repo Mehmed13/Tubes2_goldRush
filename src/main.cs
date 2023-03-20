@@ -5,7 +5,7 @@ namespace lib
 
     class Main
     {
-        static void Main(string[] args)
+        static void main(string[] args)
         {
             // Coordinate pNode = new Coordinate();
             // pNode.x = 1;
@@ -133,6 +133,11 @@ namespace lib
             {
                 Console.WriteLine("Node" + (i + 1).ToString() + ": " + cek.getGraph()[i].getVisited());
             }
+
+            // Creating BFS1 object
+            Console.WriteLine("BFS:");
+            BFS1 cekBFS1 = new BFS1(3, node1);
+            cekBFS1.runBFS1Algorithm(3, 6);
 
         }
     }
