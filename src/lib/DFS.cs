@@ -266,7 +266,7 @@ namespace lib
                 // }
 
                 // Console.Write(" ");
-                // Console.WriteLine("X: " + currentNode.getValue().x.ToString() + " Y: " + currentNode.getValue().y);
+                // Console.WriteLine("X: " + currentNode.getCoordinate().x.ToString() + " Y: " + currentNode.getCoordinate().y);
                 // Console.Write("Backtracking: ");
                 // Console.WriteLine(backtracking);
                 // Console.WriteLine(this.stack.Count);
