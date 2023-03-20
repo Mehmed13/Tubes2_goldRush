@@ -120,7 +120,7 @@ namespace lib
             List<GraphNode> graph = new List<GraphNode>() { node1, node2, node3, node4, node5, node6, node7, node8, node9, node10, node11, node12, node13, node14, node15 };
 
             // Creating DFS object
-            BFS cek = new BFS(3, graph);
+            BFS1 cek = new BFS1(3, node1);
             cek.runBFSAlgorithm();
             // foreach (char dir in cek.getPath())
             // {

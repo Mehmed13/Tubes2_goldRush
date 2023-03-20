@@ -193,6 +193,9 @@ namespace lib
                 } // found
 
             }
+            // Finishing
+            watch.Stop();
+            this.executionTime = watch.ElapsedMilliseconds; 
 
             Console.Write('Path menuju treasure: ');
             foreach (char dir in this.finalPath)
@@ -201,6 +204,7 @@ namespace lib
             }
             Console.WriteLine("");
 
+            Console.WriteLine('Waktu: ', this.executionTime);
         }
 
     }
