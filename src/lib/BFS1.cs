@@ -72,10 +72,11 @@ namespace lib
             var watch = Stopwatch.StartNew(); // timer
             GraphNode tempStartNode = this.startGraph;
             int remainingTreasures = this.numOfTreasures;
-
             while (remainingTreasures != 0) 
             {   
-                Matrix visited = new Matrix(row, col);
+                Console.Write("Sisa treasure: ");
+                Console.WriteLine(remainingTreasures);
+                // Matrix visited = new Matrix(row, col);
                 List<char> newPath = new List<char>();
                 List<GraphNode> newNodePath = new List<GraphNode>();
                 newNodePath.Add(tempStartNode);
@@ -86,47 +87,78 @@ namespace lib
                 while (!found) 
                 {
                     ElementQueue headElement = this.queue.Dequeue();
-
+                    Console.WriteLine("===========> MENGECEK KOORDINAT :");
+                        Console.Write("x: ");
+                        Console.WriteLine(headElement.route.node.getCoordinate().x);
+                        Console.Write("y: ");
+                        Console.WriteLine(headElement.route.node.getCoordinate().y);
                     // Check if the headElement's last node is treasure
                     if (headElement.route.node.isTreasure())
                     {
                         found = true;
                         finalPath.AddRange(headElement.route.path);
+                        Console.WriteLine("========= KOORDINAT TREASURE ==========");
+                        Console.Write("x: ");
+                        Console.WriteLine(headElement.route.node.getCoordinate().x);
+                        Console.Write("y: ");
+                        Console.WriteLine(headElement.route.node.getCoordinate().y);
+
                         if (remainingTreasures == 1) 
                         {
+                            Console.WriteLine("treasure terakhir");
                             foreach (GraphNode n in headElement.route.nodePath) 
                             {
                                 n.setVisited(n.getVisited() + 1);
                             }
-                            headElement.route.node.setVisited(headElement.route.node.getVisited()+1);
+                            // headElement.route.node.setVisited(headElement.route.node.getVisited()+1);
                         } 
                         else 
                         {
-                            for (int i = 0; i < headElement.route.nodePath.Count - 2; i++)  // the last element is considered not visited because it'll be done in the next iteration
+                            Console.WriteLine("treasure masih ada");
+                            for (int i = 0; i < headElement.route.nodePath.Count - 1; i++)  // the last element is considered not visited because it'll be done in the next iteration
                             {
                                 headElement.route.nodePath[i].setVisited(headElement.route.nodePath[i].getVisited() + 1);
                             }
                         }
-                        tempStartNode = headElement.route.node; 
+                        tempStartNode = headElement.route.node;
+                        Console.Write("Visited: ");
+                        Console.WriteLine(headElement.route.node.getUp().getVisited()); 
+                        // Console.WriteLine("Kanan: ", headElement.route.node.getRight().getVisited());
+                        // Console.WriteLine("Bawah: ", headElement.route.node.getDown().getVisited());
+                        // Console.WriteLine("Kiri: ", headElement.route.node.getLeft().getVisited());
+                        Console.Write("Atas: ");
+                        Console.WriteLine(headElement.route.node.getUp().getVisited()); 
+                        Console.WriteLine("====Hasil copy====");
+                        // Console.WriteLine("Kanan: ", tempStartNode.getRight().getVisited());
+                        // Console.WriteLine("Bawah: ", tempStartNode.getDown().getVisited());
+                        // Console.WriteLine("Kiri: ", tempStartNode.getLeft().getVisited());
+                        Console.Write("Atas: ");
+                        Console.WriteLine(tempStartNode.getUp().getVisited()); 
+
                         remainingTreasures--;
                         queue.Clear();
 
                     } 
                     else 
                     {
+                        Console.WriteLine("not treasure");
                         headElement.visitedNodes.setElement(headElement.route.node.getCoordinate().x, headElement.route.node.getCoordinate().y, 1);
                     }
-
+                    headElement.route.node.setTreasure(false);
 
                     // RIGHT NODE
                     if (!found && headElement.route.node.getRight() != null && headElement.visitedNodes.getElement(headElement.route.node.getRight().getCoordinate().x, headElement.route.node.getRight().getCoordinate().y) == 0)
                     {
+                    Console.Write("Masuk Kanan ");
                     // Initialize new ElementQueue
                         ElementQueue newElement = new ElementQueue();
-                        newElement.route.path = headElement.route.path;
+                        newElement.route.path = new List<char>(headElement.route.path);
+                        Console.WriteLine(headElement.route.path.Count);
+                                                Console.WriteLine("Kanan");
+
                         newElement.route.path.Add('R');
 
-                        newElement.route.nodePath = headElement.route.nodePath;
+                        newElement.route.nodePath = new List<GraphNode>(headElement.route.nodePath);
                         newElement.route.nodePath.Add(headElement.route.node.getRight());
 
                         newElement.route.node = headElement.route.node.getRight();
@@ -140,12 +172,15 @@ namespace lib
                     // DOWN NODE
                     if (!found && headElement.route.node.getDown() != null && headElement.visitedNodes.getElement(headElement.route.node.getDown().getCoordinate().x, headElement.route.node.getDown().getCoordinate().y) == 0)
                     {
+                    Console.Write("Masuk Bawah ");
                     // Initialize new ElementQueue
                         ElementQueue newElement = new ElementQueue();
-                        newElement.route.path = headElement.route.path;
+                        newElement.route.path = new List<char>(headElement.route.path);
+                        Console.WriteLine(headElement.route.path.Count);
+                                                Console.WriteLine("Bawah");
                         newElement.route.path.Add('D');
 
-                        newElement.route.nodePath = headElement.route.nodePath;
+                        newElement.route.nodePath = new List<GraphNode>(headElement.route.nodePath);
                         newElement.route.nodePath.Add(headElement.route.node.getDown());
 
                         newElement.route.node = headElement.route.node.getDown();
@@ -159,12 +194,15 @@ namespace lib
                     // LEFT NODE
                     if (!found && headElement.route.node.getLeft() != null && headElement.visitedNodes.getElement(headElement.route.node.getLeft().getCoordinate().x, headElement.route.node.getLeft().getCoordinate().y) == 0)
                     {
+                    Console.Write("Masuk Kiri ");
                     // Initialize new ElementQueue
                         ElementQueue newElement = new ElementQueue();
-                        newElement.route.path = headElement.route.path;
+                        newElement.route.path = new List<char>(headElement.route.path);
+                        Console.WriteLine(headElement.route.path.Count);
+                                                Console.WriteLine("Kiri");
                         newElement.route.path.Add('L');
 
-                        newElement.route.nodePath = headElement.route.nodePath;
+                        newElement.route.nodePath = new List<GraphNode>(headElement.route.nodePath);
                         newElement.route.nodePath.Add(headElement.route.node.getLeft());
 
                         newElement.route.node = headElement.route.node.getLeft();
@@ -178,12 +216,15 @@ namespace lib
                     // UP NODE
                     if (!found && headElement.route.node.getUp() != null && headElement.visitedNodes.getElement(headElement.route.node.getUp().getCoordinate().x, headElement.route.node.getUp().getCoordinate().y) == 0)
                     {
+                    Console.Write("Masuk Atas ");
                     // Initialize new ElementQueue
                         ElementQueue newElement = new ElementQueue();
-                        newElement.route.path = headElement.route.path;
+                        newElement.route.path = new List<char>(headElement.route.path);
+                        Console.WriteLine(headElement.route.path.Count);
+                                                Console.WriteLine("Atas");
                         newElement.route.path.Add('U');
 
-                        newElement.route.nodePath = headElement.route.nodePath;
+                        newElement.route.nodePath = new List<GraphNode>(headElement.route.nodePath);
                         newElement.route.nodePath.Add(headElement.route.node.getUp());
 
                         newElement.route.node = headElement.route.node.getUp();
@@ -208,7 +249,9 @@ namespace lib
             }
             Console.WriteLine("");
 
-            Console.WriteLine("Waktu: ", this.executionTime);
+            Console.Write("Waktu: ");
+            Console.Write(this.executionTime);
+            Console.WriteLine(" ms");
         }
 
     }

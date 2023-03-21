@@ -3,9 +3,9 @@ using System.Collections.Generic;
 namespace lib
 {
 
-    class Main
+    class lain
     {
-        static void main(string[] args)
+        static void Main(string[] args)
         {
             // Coordinate pNode = new Coordinate();
             // pNode.x = 1;
@@ -121,24 +121,31 @@ namespace lib
             List<GraphNode> graph = new List<GraphNode>() { node1, node2, node3, node4, node5, node6, node7, node8, node9, node10, node11, node12, node13, node14, node15 };
 
             // Creating DFS object
-            DFS cek = new DFS(3, graph);
-            cek.runDFSAlgorithm();
-            foreach (char dir in cek.getPath())
-            {
-                Console.Write(dir);
-            }
+            // DFS cek = new DFS(3, graph);
+            // cek.runDFSAlgorithm();
+            // foreach (char dir in cek.getPath())
+            // {
+            //     Console.Write(dir);
+            // }
 
-            Console.WriteLine("\nNum Visited Node");
-            for (int i = 0; i < graph.Count; i++)
-            {
-                Console.WriteLine("Node" + (i + 1).ToString() + ": " + cek.getGraph()[i].getVisited());
-            }
+            // Console.WriteLine("\nNum Visited Node");
+            // for (int i = 0; i < graph.Count; i++)
+            // {
+            //     Console.WriteLine("Node" + (i + 1).ToString() + ": " + cek.getGraph()[i].getVisited());
+            // }
 
             // Creating BFS1 object
             Console.WriteLine("BFS:");
             BFS1 cekBFS1 = new BFS1(3, node1);
-            cekBFS1.runBFS1Algorithm(3, 6);
+            cekBFS1.runBFS1Algorithm(4, 7);
 
+            Console.WriteLine("\nNum Visited Node");
+            for (int i = 0; i < graph.Count; i++)
+            {
+                Console.WriteLine("Node" + (i + 1).ToString() + ": " + graph[i].getVisited());
+            }
+
+            
         }
     }
 }

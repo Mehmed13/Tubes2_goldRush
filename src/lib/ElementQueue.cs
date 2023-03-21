@@ -9,6 +9,8 @@ namespace lib
 
         public ElementQueue(){
             // nothing
+            this.route = new Route();
+            this.visitedNodes = new Matrix(0,0);
         }
         
         public ElementQueue(int row, int col, List<char> path, List<GraphNode> nodePath, GraphNode lastNode, int remainingTreasures){
