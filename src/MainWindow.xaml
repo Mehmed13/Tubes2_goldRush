@@ -226,7 +226,7 @@
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
                 <Label Grid.Row="0" FontFamily="Raleway" FontSize="24" FontWeight="DemiBold" Foreground="White">Output</Label>
-                <Button Grid.Row="0" HorizontalAlignment="Right" FontFamily="Arial" FontSize="8" Click="showInput" Background="Transparent" Cursor="Hand">
+                <Button x:Name="backButton" Grid.Row="0" HorizontalAlignment="Right" FontFamily="Arial" FontSize="8" Click="showInput" Background="Transparent" Cursor="Hand">
                     <Button.Template>
                         <ControlTemplate TargetType="{x:Type Button}">
                             <Border Background="{TemplateBinding Background}"
@@ -249,9 +249,9 @@
                 <StackPanel Orientation="Vertical" Grid.Row="1" VerticalAlignment="Center">
                     <DataGrid Margin="10" Padding="0" x:Name="mazeGrid" AutoGenerateColumns="True" ItemsSource="{Binding}" HorizontalAlignment="Center" HeadersVisibility="None" IsReadOnly="True" SelectionUnit="Cell" BorderThickness="0,0,0,0" GridLinesVisibility="None" IsHitTestVisible="False">
                     </DataGrid>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
                         <ToggleButton x:Name="showSolutionToggle" Content="Show Solution" IsChecked="False"
-                    Checked="showSolution" Unchecked="showMaze" HorizontalAlignment="Center" Height="40" Width="200" FontFamily="Raleway" Cursor="Hand">
+                    Checked="showSolution" Unchecked="showMaze" HorizontalAlignment="Center" Height="40" Width="150" FontFamily="Raleway" Cursor="Hand" Margin="0,0,10,0">
                             <ToggleButton.Template>
                                 <ControlTemplate TargetType="{x:Type ToggleButton}">
                                     <Border Background="{TemplateBinding Background}"
@@ -277,7 +277,7 @@
                                 </ControlTemplate>
                             </ToggleButton.Template>
                         </ToggleButton>
-                        <Button Grid.Row="2" x:Name="stepButton" Content="Show Steps" Click="showSteps" HorizontalAlignment="Center" Height="40" Width="200" FontFamily="Raleway" Cursor="Hand">
+                        <Button Grid.Row="2" x:Name="stepButton" Content="Show Steps" Click="showSteps" HorizontalAlignment="Center" Height="40" Width="150" FontFamily="Raleway" Cursor="Hand">
                             <Button.Template>
                                 <ControlTemplate TargetType="{x:Type Button}">
                                     <Border Background="{TemplateBinding Background}"
@@ -303,22 +303,22 @@
                         </Grid.ColumnDefinitions>
                         <StackPanel Grid.Column="0" Orientation="Vertical">
                             <StackPanel Orientation="Horizontal" Width="auto">
-                                <Label VerticalAlignment="Top" FontFamily="Raleway" FontSize="14" FontWeight="Medium">Route</Label>
-                                <TextBlock Margin="10,5,0,0" Width="280" VerticalAlignment="Top" TextWrapping="WrapWithOverflow" x:Name="routeLabel" FontFamily="Raleway" FontSize="14" FontWeight="Normal" Text="-"/>
+                                <Label Foreground="White" VerticalAlignment="Top" FontFamily="Raleway" FontSize="14" FontWeight="Medium">Route</Label>
+                                <TextBlock Foreground="White" Margin="10,5,0,0" Width="280" VerticalAlignment="Top" TextWrapping="WrapWithOverflow" x:Name="routeLabel" FontFamily="Raleway" FontSize="14" FontWeight="Normal" Text="-"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
-                                <Label FontFamily="Raleway" FontSize="14" FontWeight="Medium">Nodes</Label>
-                                <Label x:Name="numOfNodesLabel" FontFamily="Raleway" FontSize="14" FontWeight="Normal">-</Label>
+                                <Label Foreground="White" FontFamily="Raleway" FontSize="14" FontWeight="Medium">Nodes</Label>
+                                <Label Foreground="White" x:Name="numOfNodesLabel" FontFamily="Raleway" FontSize="14" FontWeight="Normal">-</Label>
                             </StackPanel>
                         </StackPanel>
                         <StackPanel Grid.Column="1" Orientation="Vertical" Margin="20,0,0,0">
                             <StackPanel Orientation="Horizontal">
-                                <Label FontFamily="Raleway" FontSize="14" FontWeight="Medium">Steps</Label>
-                                <Label x:Name="stepsLabel" FontFamily="Raleway" FontSize="14" FontWeight="Normal">-</Label>
+                                <Label Foreground="White" FontFamily="Raleway" FontSize="14" FontWeight="Medium">Steps</Label>
+                                <Label Foreground="White" x:Name="stepsLabel" FontFamily="Raleway" FontSize="14" FontWeight="Normal">-</Label>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
-                                <Label FontFamily="Raleway" FontSize="14" FontWeight="Medium">Execution Time</Label>
-                                <Label x:Name="executionTimeLabel" FontFamily="Raleway" FontSize="14" FontWeight="Normal">-</Label>
+                                <Label Foreground="White" FontFamily="Raleway" FontSize="14" FontWeight="Medium">Execution Time</Label>
+                                <Label Foreground="White" x:Name="executionTimeLabel" FontFamily="Raleway" FontSize="14" FontWeight="Normal">-</Label>
                             </StackPanel>
                         </StackPanel>
                     </Grid>

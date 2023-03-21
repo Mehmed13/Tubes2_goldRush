@@ -199,6 +199,8 @@ namespace GoldRush
             showSolutionToggle.Cursor = Cursors.No;
             stepButton.IsEnabled = false;
             stepButton.Cursor = Cursors.No;
+            backButton.IsEnabled = false;
+            backButton.Cursor = Cursors.No;
             fillMatrix();
 
             // convert from matrix to graph
@@ -252,6 +254,8 @@ namespace GoldRush
             showSolutionToggle.Cursor = Cursors.Hand;
             stepButton.IsEnabled = true;
             stepButton.Cursor = Cursors.Hand;
+            backButton.IsEnabled = true;
+            backButton.Cursor = Cursors.Hand;
         }
 
 
@@ -322,6 +326,8 @@ namespace GoldRush
         // shows the solution with animation
         private async void showSolution(object sender, RoutedEventArgs e)
         {
+            backButton.IsEnabled = false;
+            backButton.Cursor = Cursors.No;
             showSolutionToggle.IsEnabled = false;
             showSolutionToggle.Cursor = Cursors.No;
             stepButton.IsEnabled = false;
@@ -388,6 +394,8 @@ namespace GoldRush
             showSolutionToggle.Cursor = Cursors.Hand;
             stepButton.IsEnabled = true;
             stepButton.Cursor = Cursors.Hand;
+            backButton.IsEnabled = true;
+            backButton.Cursor = Cursors.Hand;
         }
     }
 
