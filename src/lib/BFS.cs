@@ -108,8 +108,6 @@ namespace lib
                 {
                     
                     ElementQueue headElement = this.queue.Dequeue();
-                    this.setVisitedNodeSequence(headElement.route.node);
-                    this.setNumOfNodesVisited(this.getNumOfNodesVisited+1);
                     Console.WriteLine("===========> MENGECEK KOORDINAT :");
                     Console.Write("x: ");
                     Console.WriteLine(headElement.route.node.getCoordinate().x);
@@ -128,6 +126,8 @@ namespace lib
 
                         if (remainingTreasures == 1)
                         {
+                            this.setVisitedNodeSequence(headElement.route.node);
+                            this.setNumOfNodesVisited(this.getNumOfNodesVisited+1);
                             Console.WriteLine("treasure terakhir");
                             foreach (GraphNode n in headElement.route.nodePath)
                             {
@@ -164,6 +164,8 @@ namespace lib
                     }
                     else
                     {
+                        this.setVisitedNodeSequence(headElement.route.node);
+                        this.setNumOfNodesVisited(this.getNumOfNodesVisited+1);
                         Console.WriteLine("not treasure");
                         headElement.visitedNodes.setElement(headElement.route.node.getCoordinate().x, headElement.route.node.getCoordinate().y, 1);
                     }
