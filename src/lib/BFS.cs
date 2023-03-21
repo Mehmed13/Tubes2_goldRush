@@ -8,16 +8,20 @@ namespace lib
     {
         private List<char> finalPath;
         private int numOfTreasures;
+        private int numofNodesVisited;
         private double executionTime;
         private GraphNode startGraph;
+        private List<GraphNode> visitedNodeSequence; // urutan node yang dikunjungi
         private Queue<ElementQueue> queue;
 
         public BFS(int numOfTreasures, GraphNode startGraph)
         {
             this.finalPath = new List<char>();
             this.numOfTreasures = numOfTreasures;
+            this.numofNodesVisited = 0;
             this.executionTime = 0;
             this.startGraph = startGraph;
+            this.visitedNodeSequence = new List<GraphNode>();
             this.queue = new Queue<ElementQueue>();
         }
 
@@ -30,6 +34,10 @@ namespace lib
         {
             return this.numOfTreasures;
         }
+        public int getNumOfNodesVisited()
+        {
+            return this.numOfNodesVisited;
+        }
         public double getExecutionTime()
         {
             return this.executionTime;
@@ -37,6 +45,10 @@ namespace lib
         public GraphNode getStartGraph()
         {
             return this.startGraph;
+        }
+        public List<GraphNode> getVisitedNodeSequence()
+        {
+            return this.visitedNodeSequence;
         }
         public Queue<ElementQueue> getQueue()
         {
@@ -52,6 +64,10 @@ namespace lib
         {
             this.numOfTreasures = numOfTreasures;
         }
+        public void setNumOfNodesVisited(int numOfNodesVisited)
+        {
+            this.numOfNodesVisited = numOfNodesVisited;
+        }
         public void setExecutionTime(double executionTime)
         {
             this.executionTime = executionTime;
@@ -59,6 +75,10 @@ namespace lib
         public void setStartGraph(GraphNode startGraph)
         {
             this.startGraph = startGraph;
+        }
+        public void setVisitedNodeSequence(List<GraphNode> visitedNodeSequence)
+        {
+            this.visitedNodeSequence = visitedNodeSequence;
         }
         public void setQueue(Queue<ElementQueue> queue)
         {
@@ -86,7 +106,10 @@ namespace lib
                 bool found = false;
                 while (!found)
                 {
+                    
                     ElementQueue headElement = this.queue.Dequeue();
+                    this.setVisitedNodeSequence(headElement.route.node);
+                    this.setNumOfNodesVisited(this.getNumOfNodesVisited+1);
                     Console.WriteLine("===========> MENGECEK KOORDINAT :");
                     Console.Write("x: ");
                     Console.WriteLine(headElement.route.node.getCoordinate().x);
