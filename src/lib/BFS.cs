@@ -8,7 +8,7 @@ namespace lib
     {
         private List<char> finalPath;
         private int numOfTreasures;
-        private int numofNodesVisited;
+        private int numOfNodesVisited;
         private double executionTime;
         private GraphNode startGraph;
         private List<GraphNode> visitedNodeSequence; // urutan node yang dikunjungi
@@ -76,9 +76,9 @@ namespace lib
         {
             this.startGraph = startGraph;
         }
-        public void setVisitedNodeSequence(List<GraphNode> visitedNodeSequence)
+        public void addVisitedNodeSequence(GraphNode visitedNode)
         {
-            this.visitedNodeSequence = visitedNodeSequence;
+            this.visitedNodeSequence.Add(visitedNode);
         }
         public void setQueue(Queue<ElementQueue> queue)
         {
@@ -126,8 +126,8 @@ namespace lib
 
                         if (remainingTreasures == 1)
                         {
-                            this.setVisitedNodeSequence(headElement.route.node);
-                            this.setNumOfNodesVisited(this.getNumOfNodesVisited+1);
+                            this.addVisitedNodeSequence(headElement.route.node);
+                            this.setNumOfNodesVisited(this.getNumOfNodesVisited()+1);
                             Console.WriteLine("treasure terakhir");
                             foreach (GraphNode n in headElement.route.nodePath)
                             {
@@ -164,8 +164,8 @@ namespace lib
                     }
                     else
                     {
-                        this.setVisitedNodeSequence(headElement.route.node);
-                        this.setNumOfNodesVisited(this.getNumOfNodesVisited+1);
+                        this.addVisitedNodeSequence(headElement.route.node);
+                        this.setNumOfNodesVisited(this.getNumOfNodesVisited()+1);
                         Console.WriteLine("not treasure");
                         headElement.visitedNodes.setElement(headElement.route.node.getCoordinate().x, headElement.route.node.getCoordinate().y, 1);
                     }
