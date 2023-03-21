@@ -56,19 +56,20 @@ namespace GoldRush
                 }
                 catch (Exception exception)
                 {
-                    selectedFileLabel.Text = "Invalid txt file!";
+                    selectedFileLabel.Text = "Invalid txt file!"; // validation fails
                 }
-                fillMatrix();
+                fillMatrix(); // fill to dataGrid
             }
             else
             {
-                selectedFileLabel.Text = "No file chosen";
+                selectedFileLabel.Text = "No file chosen"; 
             }
         }
         private void handleVisualize(object sender, RoutedEventArgs e)
         {
             if (selectedFileLabel.Text.Equals("No file chosen") || selectedFileLabel.Text.Equals("Invalid txt file!"))
             {
+                // Open error pop up
                 errorPopup.IsOpen = true;
                 popUpText.Text = selectedFileLabel.Text.ToString();
                 DispatcherTimer timer = new DispatcherTimer();
@@ -82,26 +83,30 @@ namespace GoldRush
             }
             else
             {
-                // Hide the first grid
+                // Hide the input grid
                 inputGrid.Visibility = Visibility.Collapsed;
 
-                // Show the second grid
+                // Show the visualization grid
                 visualizeGrid.Visibility = Visibility.Visible;
             }
         }
 
         private void showInput(object sender, RoutedEventArgs e)
         {
-            // Hide the first grid
+            // Show the input grid
             inputGrid.Visibility = Visibility.Visible;
 
-            // Show the second grid
+            // Show the visualization grid
             visualizeGrid.Visibility = Visibility.Collapsed;
 
+            // reset the matrix
             fillMatrix();
+            
+            // hide solution
             solutionPanel.Visibility = Visibility.Collapsed;
         }
 
+        // function to fill the matrix DataGrid
         private void fillMatrix()
         {
             try
@@ -109,7 +114,7 @@ namespace GoldRush
                 int numOfNodes = 0;
                 DataTable dt = new DataTable();
                 int baseWidth;
-                if (this.maze.GetLength(1) > this.maze.GetLength(0))
+                if (this.maze.GetLength(1) > this.maze.GetLength(0)) // pick the larger between row size and col size as baseWidth
                 {
                     baseWidth = this.maze.GetLength(1);
                 }
@@ -142,22 +147,26 @@ namespace GoldRush
                     DataRow row = dt.NewRow();
                     for (int j = 0; j < this.maze.GetLength(1); j++)
                     {
+                        // if starting point (Krusty Krab), save as 6
                         if (this.maze[i, j] == 'K')
                         {
                             numOfNodes++;
                             startIdx = new int[] { i, j };
                             row[j] = 6;
                         }
+                        // if treasure, save as 5
                         else if (this.maze[i, j] == 'T')
                         {
                             numOfNodes++;
                             row[j] = 5;
                         }
+                        // if road, save as 0
                         else if (this.maze[i, j] == 'R')
                         {
                             numOfNodes++;
                             row[j] = 0;
                         }
+                        // if dirt, save as -1
                         else
                         {
                             row[j] = -1;
@@ -173,6 +182,7 @@ namespace GoldRush
             }
         }
 
+        // function to showMaze and hides solution
         private void showMaze(object sender, RoutedEventArgs e)
         {
             fillMatrix();
@@ -181,16 +191,21 @@ namespace GoldRush
             executionTimeLabel.Content = "-";
         }
 
+        // Bonus : animate steps
         private async void showSteps(object sender, RoutedEventArgs e)
         {
+            // lock other buttons that may cause RCE
             showSolutionToggle.IsEnabled = false;
             showSolutionToggle.Cursor = Cursors.No;
             stepButton.IsEnabled = false;
             stepButton.Cursor = Cursors.No;
             fillMatrix();
+
+            // convert from matrix to graph
             ArrayList graphData = Utility.getGraphData(Utility.readFromFile(filename));
             List<GraphNode> graph = (List<GraphNode>)graphData[0];
             int numOfTreasures = (int)graphData[1];
+
             List<GraphNode> steps;
             if (rbDFS.IsChecked == true)
             {
@@ -204,11 +219,14 @@ namespace GoldRush
                 searchingBFS.runBFSAlgorithm(this.maze.GetLength(0), this.maze.GetLength(1));
                 steps = searchingBFS.getVisitedNodeSequence();
             }
+
+            // animate
             int valuePrev;
             for (int i = 0; i < steps.Count; i++)
             {
                 if (i != 0)
                 {
+                    // set the previously visited to yellow
                     valuePrev = Convert.ToInt32(((DataTable)mazeGrid.DataContext).Rows[steps[i - 1].getCoordinate().x][steps[i - 1].getCoordinate().y]);
                     if (valuePrev == 5)
                     {
@@ -216,6 +234,7 @@ namespace GoldRush
                     }
                     ((DataTable)mazeGrid.DataContext).Rows[steps[i - 1].getCoordinate().x][steps[i - 1].getCoordinate().y] = valuePrev % 6 + 7;
                 }
+                // set the currently checked to blue
                 int valueCurr = Convert.ToInt32(((DataTable)mazeGrid.DataContext).Rows[steps[i].getCoordinate().x][steps[i].getCoordinate().y]);
                 ((DataTable)mazeGrid.DataContext).Rows[steps[i].getCoordinate().x][steps[i].getCoordinate().y] = 6; // set to blue
                 await Task.Delay(Convert.ToInt32(animationSlider.Value));
@@ -224,16 +243,24 @@ namespace GoldRush
             // set last to yellow
             valuePrev = Convert.ToInt32(((DataTable)mazeGrid.DataContext).Rows[steps[steps.Count - 1].getCoordinate().x][steps[steps.Count - 1].getCoordinate().y]);
             ((DataTable)mazeGrid.DataContext).Rows[steps[steps.Count - 1].getCoordinate().x][steps[steps.Count - 1].getCoordinate().y] = valuePrev % 6 + 7;
+
+            // after animation is done, show the solution (w/o animation)
             displaySolution();
+
+            // unlock buttons
             showSolutionToggle.IsEnabled = true;
             showSolutionToggle.Cursor = Cursors.Hand;
             stepButton.IsEnabled = true;
             stepButton.Cursor = Cursors.Hand;
         }
 
+
+        // shows the solution without animation
         private void displaySolution()
         {
+            // reset the DataGrid
             fillMatrix();
+
             ArrayList graphData = Utility.getGraphData(Utility.readFromFile(filename));
             List<GraphNode> graph = (List<GraphNode>)graphData[0];
             int numOfTreasures = (int)graphData[1];
@@ -292,6 +319,7 @@ namespace GoldRush
             solutionPanel.Visibility = Visibility.Visible;
         }
 
+        // shows the solution with animation
         private async void showSolution(object sender, RoutedEventArgs e)
         {
             showSolutionToggle.IsEnabled = false;
