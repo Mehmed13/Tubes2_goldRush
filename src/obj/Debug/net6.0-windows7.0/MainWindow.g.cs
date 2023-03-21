@@ -170,7 +170,11 @@ namespace GoldRush {
         #line hidden
         
         
+<<<<<<< HEAD:src/obj/Debug/net6.0-windows7.0/MainWindow.g.cs
         #line 281 "..\..\..\MainWindow.xaml"
+=======
+        #line 221 "..\..\..\MainWindow.xaml"
+>>>>>>> BFS:src/gui/GoldRush/obj/Debug/net6.0-windows7.0/MainWindow.g.cs
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
         internal System.Windows.Controls.TextBlock popUpText;
         
@@ -273,8 +277,13 @@ namespace GoldRush {
             case 13:
             this.stepButton = ((System.Windows.Controls.Button)(target));
             
+<<<<<<< HEAD:src/obj/Debug/net6.0-windows7.0/MainWindow.g.cs
             #line 235 "..\..\..\MainWindow.xaml"
             this.stepButton.Click += new System.Windows.RoutedEventHandler(this.showSteps);
+=======
+            #line 199 "..\..\..\MainWindow.xaml"
+            ((System.Windows.Controls.Button)(target)).Click += new System.Windows.RoutedEventHandler(this.ShowInput);
+>>>>>>> BFS:src/gui/GoldRush/obj/Debug/net6.0-windows7.0/MainWindow.g.cs
             
             #line default
             #line hidden
