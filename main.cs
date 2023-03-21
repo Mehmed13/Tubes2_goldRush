@@ -134,10 +134,10 @@ namespace lib
             //     Console.WriteLine("Node" + (i + 1).ToString() + ": " + cek.getGraph()[i].getVisited());
             // }
 
-            // Creating BFS1 object
+            // Creating BFS object
             Console.WriteLine("BFS:");
-            BFS1 cekBFS1 = new BFS1(3, node1);
-            cekBFS1.runBFS1Algorithm(4, 7);
+            BFS cekBFS = new BFS(3, node1);
+            cekBFS.runBFSAlgorithm(4, 7);
 
             Console.WriteLine("\nNum Visited Node");
             for (int i = 0; i < graph.Count; i++)
@@ -145,7 +145,7 @@ namespace lib
                 Console.WriteLine("Node" + (i + 1).ToString() + ": " + graph[i].getVisited());
             }
 
-            
+
         }
     }
 }

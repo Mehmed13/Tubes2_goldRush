@@ -12,7 +12,7 @@ namespace lib
         private GraphNode startGraph;
         private Queue<ElementQueue> queue;
 
-        public BFS1(int numOfTreasures, GraphNode startGraph)
+        public BFS(int numOfTreasures, GraphNode startGraph)
         {
             this.finalPath = new List<char>();
             this.numOfTreasures = numOfTreasures;
@@ -67,7 +67,7 @@ namespace lib
 
         // Method
 
-        public void runBFS1Algorithm(int row, int col)
+        public void runBFSAlgorithm(int row, int col)
         {
             var watch = Stopwatch.StartNew(); // timer
             GraphNode tempStartNode = this.startGraph;
