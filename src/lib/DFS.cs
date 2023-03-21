@@ -314,10 +314,10 @@ namespace lib
                     // Console.WriteLine("Remaining Treasures: " + currentRemainingTreasures.ToString());
                     if (((backtracking && !stopbacktracking) || currentNode.isTreasure()) && this.stack.Count > 0) // Jika backtracking simpan rute yang ditempuh ditambah direction dari current Node
                     {
-                        this.visitedNodeSequence.Add(currentNode); // tambahkan ke visitedNodeSequence
                         if (!currentNode.isTreasure())
                         {
                             currentNode.setVisited(currentNode.getVisited() + 1);
+                            this.visitedNodeSequence.Add(currentNode); // tambahkan ke visitedNodeSequence
                         }
                         backtracking = true;
                         this.stack.Peek().remainingTreasures = currentRemainingTreasures;
@@ -402,6 +402,7 @@ namespace lib
                     multiplevisited = false;
                     // Evaluasi currentNode
                     currentNode.setVisited(currentNode.getVisited() + 1); // Increment numOfvisited
+                    this.visitedNodeSequence.Add(currentNode);// tambahkan ke visitedNodeSequence
                     if (currentNode.isTreasure())
                     { // Jika merupakan treasure
                         currentRemainingTreasures--;
@@ -411,15 +412,11 @@ namespace lib
                             remainingTreasures = 0;
                             tempPath = currentPath;
                             currentNodePath.Add(currentNode);
-                            this.visitedNodeSequence.Add(currentNode);
                             tempNodePath = currentNodePath;
                             continue;
                         }
                     }
-                    else
-                    {
-                        this.visitedNodeSequence.Add(currentNode);// tambahkan ke visitedNodeSequence
-                    }
+
                     // Console.WriteLine("Remaining Treasures: " + currentRemainingTreasures.ToString());
                     if (currentNode.isNeighbourVisitAbleExist())
                     {
