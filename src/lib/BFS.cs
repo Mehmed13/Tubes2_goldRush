@@ -121,19 +121,19 @@ namespace lib
                             }
                         }
                         tempStartNode = headElement.route.node;
-                        Console.Write("Visited: ");
-                        Console.WriteLine(headElement.route.node.getUp().getVisited());
+                        // Console.Write("Visited: ");
+                        // Console.WriteLine(headElement.route.node.getUp().getVisited());
                         // Console.WriteLine("Kanan: ", headElement.route.node.getRight().getVisited());
                         // Console.WriteLine("Bawah: ", headElement.route.node.getDown().getVisited());
                         // Console.WriteLine("Kiri: ", headElement.route.node.getLeft().getVisited());
-                        Console.Write("Atas: ");
-                        Console.WriteLine(headElement.route.node.getUp().getVisited());
-                        Console.WriteLine("====Hasil copy====");
+                        // Console.Write("Atas: ");
+                        // Console.WriteLine(headElement.route.node.getUp().getVisited());
+                        // Console.WriteLine("====Hasil copy====");
                         // Console.WriteLine("Kanan: ", tempStartNode.getRight().getVisited());
                         // Console.WriteLine("Bawah: ", tempStartNode.getDown().getVisited());
                         // Console.WriteLine("Kiri: ", tempStartNode.getLeft().getVisited());
-                        Console.Write("Atas: ");
-                        Console.WriteLine(tempStartNode.getUp().getVisited());
+                        // Console.Write("Atas: ");
+                        // Console.WriteLine(tempStartNode.getUp().getVisited());
 
                         remainingTreasures--;
                         queue.Clear();

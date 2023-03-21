@@ -7,4 +7,16 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="assets\krabby.png" />
+    <None Remove="assets\spongebob.png" />
+    <None Remove="spongebob.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="assets\krabby.png" />
+    <Resource Include="assets\spongebob.png" />
+    <Resource Include="spongebob.png" />
+  </ItemGroup>
+
 </Project>
