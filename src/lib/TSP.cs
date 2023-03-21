@@ -4,15 +4,15 @@ using System.Collections.Generic;
 
 namespace lib
 {
-    class DFS
+    class TSP
     {
         // PRIORITAS DRIECTIONS : RIGHT, DOWN, LEFT, UP
         // Belum handling kasus harus bolak balik + deepclone nodePath : masih bitwise copy sepertinya
         // Mekanisme 
-        // Normal Flow: DFS seperti biasa
-        // backAndForth Flow: DFS seperti biasa hingga ketemu node treasure tetapi udah dicek, pindah ke flow backAndForth
+        // Normal Flow: TSP seperti biasa
+        // backAndForth Flow: TSP seperti biasa hingga ketemu node treasure tetapi udah dicek, pindah ke flow backAndForth
         //                    stack dikosongkan dan disisakan satu saja, yaitu node treasure tetapi udah dicek wktu ganti mode
-        //                    Pengunjungan terhadap node yang sudah dikunjungi menjadi diperbolehkan dan dfs mencari treasure yang lain
+        //                    Pengunjungan terhadap node yang sudah dikunjungi menjadi diperbolehkan dan TSP mencari treasure yang lain
         //                    Hal ini masih mengandung bug saat ada 3 jalur bolak balik
 
         //                    Maybe solved, dalam pikiranku, aku membayangkan setelah masuk backAndForth, batas maks dikunjungi itu jadi 2
@@ -30,7 +30,7 @@ namespace lib
         private Stack<Route> stack;
 
         // Constructor
-        public DFS()
+        public TSP()
         {
             this.path = new List<char>();
             this.numOfTreasures = 0;
@@ -41,15 +41,15 @@ namespace lib
             this.stack = new Stack<Route>();
         }
 
-        public DFS(int numOftreasures, List<GraphNode> graph)
+        public TSP(DFS dfsAlgorithm)
         {
-            this.path = new List<char>();
-            this.numOfTreasures = numOftreasures;
-            this.numOfNodesVisited = 0;
-            this.executionTime = 0;
-            this.graph = graph;
-            this.visitedNodeSequence = new List<GraphNode>();
-            this.stack = new Stack<Route>();
+            this.path = new List<char>(dfsAlgorithm.getPath());
+            this.numOfTreasures = dfsAlgorithm.getNumOfTreasures();
+            this.numOfNodesVisited = dfsAlgorithm.getNumOfNodesVisited();
+            this.executionTime = dfsAlgorithm.getExecutionTime();
+            this.graph = dfsAlgorithm.getGraph();
+            this.visitedNodeSequence = new List<GraphNode>(dfsAlgorithm.getVisitedNodeSequence());
+            this.stack = new Stack<Route>(dfsAlgorithm.getStack());
         }
 
         // Getter
@@ -81,9 +81,7 @@ namespace lib
 
         public Stack<Route> getStack()
         {
-            Stack<Route> ctsack;
-            ctsack = new Stack<Route>(this.stack);
-            return ctsack;
+            return this.stack;
         }
 
 
@@ -132,6 +130,11 @@ namespace lib
                 }
             }
             return false;
+        }
+
+        public bool isStartNode(GraphNode node)
+        {
+            return (node.getCoordinate().x == this.graph[0].getCoordinate().x && node.getCoordinate().y == this.graph[0].getCoordinate().y);
         }
 
         private void cekTetangga(GraphNode currentNode, List<char> currentPath, List<GraphNode> currentNodePath, int currentRemainingTreasures)
@@ -222,41 +225,30 @@ namespace lib
             }
         }
 
-        public void runDFSAlgorithm()
+        public void runTSPDFSAlgorithm()
         {
             // Inisialization
 
             var watch = Stopwatch.StartNew(); // timer
+            bool backToStart = false;
             bool backtracking = false;
             bool stopbacktracking = false;
             bool multiplevisited = false;
-            int remainingTreasures = this.numOfTreasures;
-            if (this.graph[0].isTreasure())
-            {
-                remainingTreasures--;
-            }
 
             Route tempRoute = new Route();
             List<char> tempPath = new List<char>();
+            List<GraphNode> tempNodePath = new List<GraphNode>();
 
-            // Inisialisasi
+            // Inisialisasi setelah ditemukannya treasure terakhir, stack dijamin tak kosong karena stack akhir dfs
 
-            List<GraphNode> tempNodePath = new List<GraphNode>() { this.graph[0] };
-            this.graph[0].setVisited(1); // Telah dikunjungi
-            tempRoute.node = this.graph[0];
-            tempRoute.nodePath = tempNodePath;
-            tempRoute.path = tempPath;
-            tempRoute.remainingTreasures = remainingTreasures;
-            this.stack.Push(tempRoute); // Push rute pertama
-            this.visitedNodeSequence.Add(this.graph[0]); // Tambahkan node pertama ke visitedNodeSequence
 
             // Console.WriteLine("X: " + this.stack.Peek().node.getValue().x.ToString() + " Y: " + this.stack.Peek().node.getValue().y);
 
-            // Pengecekan tetangga untuk node pertama
-            cekTetangga(this.graph[0], tempPath, tempNodePath, remainingTreasures);
+            // Pengecekan tetangga untuk node treasure terakhir
+            cekTetangga(this.stack.Peek().node, this.stack.Peek().path, this.stack.Peek().nodePath, this.stack.Peek().remainingTreasures);
 
             // Loop mencari semua treasures
-            while (remainingTreasures != 0) // Akan looping hingga remaining treasures = 0
+            while (!backToStart) // Akan looping hingga kembali ke start
             {
                 // Pengecekan currentNode, yaitu Peek pada stack
                 GraphNode currentNode = new GraphNode();
@@ -268,139 +260,136 @@ namespace lib
                 currentNodePath = this.stack.Peek().nodePath;
                 int currentRemainingTreasures = this.stack.Peek().remainingTreasures;
 
-                // foreach (char dir in currentPath)
-                // {
-                //     Console.Write(dir);
-                // }
+                foreach (char dir in currentPath)
+                {
+                    Console.Write(dir);
+                }
 
-                // Console.Write(" ");
-                // Console.WriteLine("X: " + currentNode.getCoordinate().x.ToString() + " Y: " + currentNode.getCoordinate().y);
-                // Console.Write("Backtracking: ");
-                // Console.WriteLine(backtracking);
-                // Console.WriteLine(this.stack.Count);
-
-                if (currentNode.getVisited() > 0 && !multiplevisited)
-                { // Jika sudah pernah dikunjungi, pop route dari stack
-                    Route currentRoute = new Route();
-                    currentRoute = this.stack.Pop();
-                    // Console.WriteLine("Remaining Treasures: " + currentRemainingTreasures.ToString());
-                    if ((backtracking && !stopbacktracking) || currentNode.isTreasure()) // Jika backtracking simpan rute yang ditempuh ditambah direction dari current Node
-                    {
-                        if (!currentNode.isTreasure())
-                        {
-                            currentNode.setVisited(currentNode.getVisited() + 1);
-                            this.visitedNodeSequence.Add(currentNode); // tambahkan ke visitedNodeSequence
-                        }
-                        backtracking = true;
-                        this.stack.Peek().remainingTreasures = currentRemainingTreasures;
-                        currentNodePath.Add(currentNode);
-                        this.stack.Peek().nodePath = currentNodePath;
-                        if (this.stack.Peek().node.getRight() == currentRoute.node) // Backtrack ke kiri
-                        {
-                            currentPath.Add('L');
-                            this.stack.Peek().path = currentPath;
-                        }
-                        else if (this.stack.Peek().node.getDown() == currentRoute.node) // Backtrack ke atas
-                        {
-                            currentPath.Add('U');
-                            this.stack.Peek().path = currentPath;
-                        }
-                        else if (this.stack.Peek().node.getLeft() == currentRoute.node) // Backtrack ke kanan
-                        {
-                            currentPath.Add('R');
-                            this.stack.Peek().path = currentPath;
-                        }
-                        else if (this.stack.Peek().node.getUp() == currentRoute.node) // Backtrack ke bawah
-                        {
-                            currentPath.Add('D');
-                            this.stack.Peek().path = currentPath;
-                        }
-                        else // Jika selanjutnya backtrack akan berhenti
-                        {
-                            this.stack.Peek().path = currentPath;
-                        }
-                    }
-                    else // Jika tidak sedang backtracking, atau ada sinyal untuk stop backtracking
-                    {
-                        if (stopbacktracking) // berada di simpang, sinyal stop backtracking menyala
-                        {
-                            // Lakukan pengisian path yang sesuai dikaitkan dengan node backtrack sebelum simpang
-                            if (currentNode.getRight() == currentNodePath[currentNodePath.Count - 1])
-                            {
-                                currentPath.Add('L');
-                            }
-                            else if (currentNode.getDown() == currentNodePath[currentNodePath.Count - 1])
-                            {
-                                currentPath.Add('U');
-                            }
-                            else if (currentNode.getLeft() == currentNodePath[currentNodePath.Count - 1])
-                            {
-                                currentPath.Add('R');
-                            }
-                            else if (currentNode.getUp() == currentNodePath[currentNodePath.Count - 1])
-                            {
-                                currentPath.Add('D');
-                            }
-                            currentNodePath.Add(currentNode);
-
-                            // Set marker untuk stop backtracking di simpang
-                            backtracking = false;
-                            stopbacktracking = false;
-                            multiplevisited = true;
-                            this.stack.Push(currentRoute); // Push agar dievaluasi ulang dalam situasi tidak backtracking
-                        }
-                        else
-                        { // Jika hanya berupa backtrack karena tidak ada solusi
-                            this.visitedNodeSequence.Add(currentNode);
-                        }
-                    }
+                Console.Write(" ");
+                Console.WriteLine("X: " + currentNode.getCoordinate().x.ToString() + " Y: " + currentNode.getCoordinate().y);
+                Console.Write("Backtracking: ");
+                Console.WriteLine(backtracking);
+                Console.WriteLine(this.stack.Count);
+                if (isStartNode(currentNode)) // Jika sudah kembali ke startNode
+                {
+                    tempPath = currentPath;
+                    currentNodePath.Add(currentNode);
+                    tempNodePath = currentNodePath;
+                    backToStart = true;
                 }
                 else
                 {
-                    if (backtracking) // Harus handling oper" dari backtracking ke normal
-                    {
-                        // Kasus jika backtracking distop. Yaitu saat terdapat node belum dikunjungi. Pop hingga ketemu simpang
-                        stopbacktracking = true;
+
+                    if (currentNode.getVisited() > 0 && !multiplevisited)
+                    { // Jika sudah pernah dikunjungi, pop route dari stack
                         Route currentRoute = new Route();
                         currentRoute = this.stack.Pop();
-                        this.stack.Peek().path = currentPath;
-                        this.stack.Peek().nodePath = currentNodePath;
-                        this.stack.Peek().remainingTreasures = currentRemainingTreasures;
-                        // Console.Write("Visited: ");
-                        // Console.WriteLine(currentNode.getVisited().ToString());
-                        continue;
-                    }
-
-                    multiplevisited = false;
-                    // Evaluasi currentNode
-                    currentNode.setVisited(currentNode.getVisited() + 1); // Increment numOfvisited
-                    this.visitedNodeSequence.Add(currentNode);// tambahkan ke visitedNodeSequence
-                    if (currentNode.isTreasure())
-                    { // Jika merupakan treasure
-                        currentRemainingTreasures--;
-                        this.stack.Peek().remainingTreasures--;
-                        if (currentRemainingTreasures == 0)
+                        // Console.WriteLine("Remaining Treasures: " + currentRemainingTreasures.ToString());
+                        if ((backtracking && !stopbacktracking) || currentNode.isTreasure()) // Jika backtracking simpan rute yang ditempuh ditambah direction dari current Node
                         {
-                            remainingTreasures = 0;
-                            tempPath = currentPath;
+                            if (!currentNode.isTreasure())
+                            {
+                                currentNode.setVisited(currentNode.getVisited() + 1);
+                                this.visitedNodeSequence.Add(currentNode); // tambahkan ke visitedNodeSequence
+                            }
+                            backtracking = true;
+                            this.stack.Peek().remainingTreasures = currentRemainingTreasures;
                             currentNodePath.Add(currentNode);
-                            tempNodePath = currentNodePath;
-                            continue;
+                            this.stack.Peek().nodePath = currentNodePath;
+                            if (this.stack.Peek().node.getRight() == currentRoute.node) // Backtrack ke kiri
+                            {
+                                currentPath.Add('L');
+                                this.stack.Peek().path = currentPath;
+                            }
+                            else if (this.stack.Peek().node.getDown() == currentRoute.node) // Backtrack ke atas
+                            {
+                                currentPath.Add('U');
+                                this.stack.Peek().path = currentPath;
+                            }
+                            else if (this.stack.Peek().node.getLeft() == currentRoute.node) // Backtrack ke kanan
+                            {
+                                currentPath.Add('R');
+                                this.stack.Peek().path = currentPath;
+                            }
+                            else if (this.stack.Peek().node.getUp() == currentRoute.node) // Backtrack ke bawah
+                            {
+                                currentPath.Add('D');
+                                this.stack.Peek().path = currentPath;
+                            }
+                            else // Jika selanjutnya backtrack akan berhenti
+                            {
+                                this.stack.Peek().path = currentPath;
+                            }
                         }
-                    }
+                        else // Jika tidak sedang backtracking, atau ada sinyal untuk stop backtracking
+                        {
+                            if (stopbacktracking) // berada di simpang, sinyal stop backtracking menyala
+                            {
+                                // Lakukan pengisian path yang sesuai dikaitkan dengan node backtrack sebelum simpang
+                                if (currentNode.getRight() == currentNodePath[currentNodePath.Count - 1])
+                                {
+                                    currentPath.Add('L');
+                                }
+                                else if (currentNode.getDown() == currentNodePath[currentNodePath.Count - 1])
+                                {
+                                    currentPath.Add('U');
+                                }
+                                else if (currentNode.getLeft() == currentNodePath[currentNodePath.Count - 1])
+                                {
+                                    currentPath.Add('R');
+                                }
+                                else if (currentNode.getUp() == currentNodePath[currentNodePath.Count - 1])
+                                {
+                                    currentPath.Add('D');
+                                }
+                                currentNodePath.Add(currentNode);
 
-                    // Console.WriteLine("Remaining Treasures: " + currentRemainingTreasures.ToString());
-                    if (currentNode.isNeighbourVisitAbleExist())
-                    {
-                        // Pengecekan tetangga untuk node yang sedang dikunjungi
-                        // Console.WriteLine("Ko iyo ko");
-                        cekTetangga(currentNode, currentPath, currentNodePath, currentRemainingTreasures);
+                                // Set marker untuk stop backtracking di simpang
+                                backtracking = false;
+                                stopbacktracking = false;
+                                multiplevisited = true;
+                                this.stack.Push(currentRoute); // Push agar dievaluasi ulang dalam situasi tidak backtracking
+                            }
+                            else
+                            { // Jika hanya berupa backtrack karena tidak ada solusi
+                                this.visitedNodeSequence.Add(currentNode);
+                            }
+                        }
                     }
                     else
                     {
-                        this.stack.Peek().remainingTreasures = currentRemainingTreasures;
-                        this.stack.Peek().nodePath = currentNodePath;
-                        this.stack.Peek().path = currentPath;
+                        if (backtracking) // Harus handling oper" dari backtracking ke normal
+                        {
+                            // Kasus jika backtracking distop. Yaitu saat terdapat node belum dikunjungi. Pop hingga ketemu simpang
+                            stopbacktracking = true;
+                            Route currentRoute = new Route();
+                            currentRoute = this.stack.Pop();
+                            this.stack.Peek().path = currentPath;
+                            this.stack.Peek().nodePath = currentNodePath;
+                            this.stack.Peek().remainingTreasures = currentRemainingTreasures;
+                            // Console.Write("Visited: ");
+                            // Console.WriteLine(currentNode.getVisited().ToString());
+                            continue;
+                        }
+
+                        multiplevisited = false;
+                        // Evaluasi currentNode
+                        currentNode.setVisited(currentNode.getVisited() + 1); // Increment numOfvisited
+                        this.visitedNodeSequence.Add(currentNode);// tambahkan ke visitedNodeSequence
+
+                        // Console.WriteLine("Remaining Treasures: " + currentRemainingTreasures.ToString());
+                        if (currentNode.isNeighbourVisitAbleExist())
+                        {
+                            // Pengecekan tetangga untuk node yang sedang dikunjungi
+                            // Console.WriteLine("Ko iyo ko");
+                            cekTetangga(currentNode, currentPath, currentNodePath, currentRemainingTreasures);
+                        }
+                        else
+                        {
+                            this.stack.Peek().remainingTreasures = currentRemainingTreasures;
+                            this.stack.Peek().nodePath = currentNodePath;
+                            this.stack.Peek().path = currentPath;
+                        }
                     }
                 }
 
@@ -410,7 +399,7 @@ namespace lib
 
             // Finishing
             watch.Stop();
-            this.executionTime = watch.ElapsedMilliseconds; // get the execution time in ms
+            this.executionTime += watch.ElapsedMilliseconds; // get the execution time in ms
             this.path = tempPath;
             this.numOfNodesVisited = 0;
             foreach (GraphNode node in this.graph)
@@ -422,7 +411,7 @@ namespace lib
 
         // static void Main(string[] args)
         // {
-        //     System.Console.WriteLine("DFS Algorithm!");
+        //     System.Console.WriteLine("TSP Algorithm!");
 
         // }
     }

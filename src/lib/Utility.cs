@@ -103,11 +103,12 @@ namespace lib
         public static void Main(string[] args)
         {
             char[,] matrixMap = {
-                { 'X', 'X', 'T', 'X','T', 'X', 'T', 'X', 'X'},
-                { 'X', 'X', 'R', 'X','R', 'X', 'R', 'X', 'X'},
-                { 'K', 'R', 'R', 'R','R', 'R', 'R', 'R', 'T'},
-                { 'X', 'X', 'R', 'X','R', 'X', 'R', 'X', 'X'},
-                { 'X', 'X', 'T', 'X','T', 'X', 'T', 'X', 'X'}};
+                {'K', 'R', 'R', 'R'},
+                {'X', 'R', 'X', 'T'},
+                {'X', 'T', 'R', 'R'},
+                {'X', 'R', 'X', 'X'}
+            };
+
             ArrayList graphData = getGraphData(matrixMap);
             List<GraphNode> graph = (List<GraphNode>)graphData[0];
             int numOfTreasures = (int)graphData[1];
@@ -147,24 +148,48 @@ namespace lib
 
             DFS searchingDFS = new DFS(numOfTreasures, graph);
             searchingDFS.runDFSAlgorithm();
-            Console.WriteLine("Path DFS: ");
-            List<char> pathDFS = searchingDFS.getPath();
-            for (int i = 0; i < pathDFS.Count; i++)
+            Stack<Route> stack = new Stack<Route>(searchingDFS.getStack());
+            TSP searchingTSP = new TSP(searchingDFS);
+            searchingTSP.runTSPDFSAlgorithm();
+
+            // Console.WriteLine("Path DFS: ");
+            // List<char> pathDFS = searchingDFS.getPath();
+            // for (int i = 0; i < pathDFS.Count; i++)
+            // {
+            //     Console.Write(pathDFS[i]);
+            //     if (i != pathDFS.Count - 1)
+            //         Console.Write("-");
+            // }
+
+            // Console.WriteLine();
+            // Console.WriteLine("Visited Node Sequence:");
+            // List<GraphNode> visitedNodeSequence = searchingDFS.getVisitedNodeSequence();
+            // foreach (GraphNode visitedNode in visitedNodeSequence)
+            // {
+            //     Console.WriteLine(visitedNode.getCoordinate().x + " " + visitedNode.getCoordinate().y + "  :" + visitedNode.getVisited().ToString());
+            // }
+            // Console.WriteLine("Num of visitedNodes: " + searchingDFS.getNumOfNodesVisited().ToString());
+            // Console.WriteLine("TimeExecution: " + searchingDFS.getExecutionTime().ToString() + "ms");
+
+
+            Console.WriteLine("Path TSP: ");
+            List<char> pathTSP = searchingTSP.getPath();
+            for (int i = 0; i < pathTSP.Count; i++)
             {
-                Console.Write(pathDFS[i]);
-                if (i != pathDFS.Count - 1)
+                Console.Write(pathTSP[i]);
+                if (i != pathTSP.Count - 1)
                     Console.Write("-");
             }
 
             Console.WriteLine();
             Console.WriteLine("Visited Node Sequence:");
-            List<GraphNode> visitedNodeSequence = searchingDFS.getVisitedNodeSequence();
+            List<GraphNode> visitedNodeSequence = searchingTSP.getVisitedNodeSequence();
             foreach (GraphNode visitedNode in visitedNodeSequence)
             {
                 Console.WriteLine(visitedNode.getCoordinate().x + " " + visitedNode.getCoordinate().y + "  :" + visitedNode.getVisited().ToString());
             }
-            Console.WriteLine("Num of visitedNodes: " + searchingDFS.getNumOfNodesVisited().ToString());
-            Console.WriteLine("TimeExecution: " + searchingDFS.getExecutionTime().ToString() + "ms");
+            Console.WriteLine("Num of visitedNodes: " + searchingTSP.getNumOfNodesVisited().ToString());
+            Console.WriteLine("TimeExecution: " + searchingTSP.getExecutionTime().ToString() + "ms");
         }
 
     }
