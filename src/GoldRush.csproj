@@ -16,7 +16,6 @@
   <ItemGroup>
     <Resource Include="assets\krabby.png" />
     <Resource Include="assets\spongebob.png" />
-    <Resource Include="spongebob.png" />
   </ItemGroup>
 
 </Project>

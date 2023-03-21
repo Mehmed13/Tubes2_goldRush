@@ -18,7 +18,7 @@ namespace lib
         {
             this.finalPath = new List<char>();
             this.numOfTreasures = numOfTreasures;
-            this.numofNodesVisited = 0;
+            this.numOfNodesVisited = 0;
             this.executionTime = 0;
             this.startGraph = startGraph;
             this.visitedNodeSequence = new List<GraphNode>();

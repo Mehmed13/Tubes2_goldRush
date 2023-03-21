@@ -48,22 +48,22 @@ namespace GoldRush
             {
                 string filename = dialog.FileName; // get file name
                                                    // set text block text to file name
-                selectedFileLabel.Content = filename;
+                selectedFileLabel.Text = filename;
                 this.filename = filename;
                 fillMatrix();
             }
             else
             {
-                selectedFileLabel.Content = "No file chosen";
+                selectedFileLabel.Text = "No file chosen";
             }
         }
 
         private void Visualize(object sender, RoutedEventArgs e)
         {
-            if (selectedFileLabel.Content.Equals("No file chosen") || selectedFileLabel.Content.Equals("Invalid txt file!"))
+            if (selectedFileLabel.Text.Equals("No file chosen") || selectedFileLabel.Text.Equals("Invalid txt file!"))
             {
                 errorPopup.IsOpen = true;
-                popUpText.Text = selectedFileLabel.Content.ToString();
+                popUpText.Text = selectedFileLabel.Text.ToString();
                 DispatcherTimer timer = new DispatcherTimer();
                 timer.Interval = TimeSpan.FromSeconds(2);
                 timer.Tick += (s, args) =>
@@ -165,7 +165,7 @@ namespace GoldRush
             }
             catch (Exception e)
             {
-                selectedFileLabel.Content = "Invalid txt file!";
+                selectedFileLabel.Text = "Invalid txt file!";
             }
         }
 
@@ -187,36 +187,39 @@ namespace GoldRush
             ArrayList graphData = Utility.getGraphData(Utility.readFromFile(filename));
             List<GraphNode> graph = (List<GraphNode>)graphData[0];
             int numOfTreasures = (int)graphData[1];
-            int stepsCount = 0;
-            double executionTime = 0;
             List<GraphNode> steps;
             if (rbDFS.IsChecked == true)
             {
                 DFS searchingDFS = new DFS(numOfTreasures, graph);
                 searchingDFS.runDFSAlgorithm();
                 steps = searchingDFS.getVisitedNodeSequence();
-                Debug.WriteLine(steps.Count);
-                int valuePrev;
-                for (int i = 0; i < steps.Count; i++)
-                {
-                    if (i != 0)
-                    {
-                        valuePrev = Convert.ToInt32(((DataTable)mazeGrid.DataContext).Rows[steps[i - 1].getCoordinate().x][steps[i - 1].getCoordinate().y]);
-                        if (valuePrev == 5)
-                        {
-                            valuePrev = 0;
-                        }
-                        ((DataTable)mazeGrid.DataContext).Rows[steps[i - 1].getCoordinate().x][steps[i - 1].getCoordinate().y] = valuePrev % 6 + 7;
-                    }
-                    int valueCurr = Convert.ToInt32(((DataTable)mazeGrid.DataContext).Rows[steps[i].getCoordinate().x][steps[i].getCoordinate().y]);
-                    ((DataTable)mazeGrid.DataContext).Rows[steps[i].getCoordinate().x][steps[i].getCoordinate().y] = 6; // set to blue
-                    await Task.Delay(Convert.ToInt32(animationSlider.Value));
-                    ((DataTable)mazeGrid.DataContext).Rows[steps[i].getCoordinate().x][steps[i].getCoordinate().y] = valueCurr; // reset the value
-                }
-                // set last to yellow
-                valuePrev = Convert.ToInt32(((DataTable)mazeGrid.DataContext).Rows[steps[steps.Count - 1].getCoordinate().x][steps[steps.Count - 1].getCoordinate().y]);
-                ((DataTable)mazeGrid.DataContext).Rows[steps[steps.Count - 1].getCoordinate().x][steps[steps.Count - 1].getCoordinate().y] = valuePrev % 6 + 7;
             }
+            else
+            {
+                BFS searchingBFS = new BFS(numOfTreasures, graph[0]);
+                searchingBFS.runBFSAlgorithm(this.maze.GetLength(0), this.maze.GetLength(1));
+                steps = searchingBFS.getVisitedNodeSequence();
+            }
+            int valuePrev;
+            for (int i = 0; i < steps.Count; i++)
+            {
+                if (i != 0)
+                {
+                    valuePrev = Convert.ToInt32(((DataTable)mazeGrid.DataContext).Rows[steps[i - 1].getCoordinate().x][steps[i - 1].getCoordinate().y]);
+                    if (valuePrev == 5)
+                    {
+                        valuePrev = 0;
+                    }
+                    ((DataTable)mazeGrid.DataContext).Rows[steps[i - 1].getCoordinate().x][steps[i - 1].getCoordinate().y] = valuePrev % 6 + 7;
+                }
+                int valueCurr = Convert.ToInt32(((DataTable)mazeGrid.DataContext).Rows[steps[i].getCoordinate().x][steps[i].getCoordinate().y]);
+                ((DataTable)mazeGrid.DataContext).Rows[steps[i].getCoordinate().x][steps[i].getCoordinate().y] = 6; // set to blue
+                await Task.Delay(Convert.ToInt32(animationSlider.Value));
+                ((DataTable)mazeGrid.DataContext).Rows[steps[i].getCoordinate().x][steps[i].getCoordinate().y] = valueCurr; // reset the value
+            }
+            // set last to yellow
+            valuePrev = Convert.ToInt32(((DataTable)mazeGrid.DataContext).Rows[steps[steps.Count - 1].getCoordinate().x][steps[steps.Count - 1].getCoordinate().y]);
+            ((DataTable)mazeGrid.DataContext).Rows[steps[steps.Count - 1].getCoordinate().x][steps[steps.Count - 1].getCoordinate().y] = valuePrev % 6 + 7;
             displaySolution();
             showSolutionToggle.IsEnabled = true;
             showSolutionToggle.Cursor = Cursors.Hand;

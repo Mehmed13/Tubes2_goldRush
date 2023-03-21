@@ -153,7 +153,7 @@
                             </ControlTemplate>
                         </Button.Template>
                     </Button>
-                    <Label x:Name="selectedFileLabel" Content="No file chosen" Foreground="#FFF8B179" />
+                    <TextBlock x:Name="selectedFileLabel" Text="No file chosen" Foreground="#FFF8B179" />
                 </StackPanel>
                 <StackPanel Grid.Row="1" Margin="5,0,5,0">
                     <Label Foreground="White" FontSize="24" FontFamily="Raleway" FontWeight="DemiBold" Margin="0,5,0,5">Algorithm</Label>
