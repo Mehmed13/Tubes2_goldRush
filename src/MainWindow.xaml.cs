@@ -38,7 +38,7 @@ namespace GoldRush
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void handleChooseFile(object sender, RoutedEventArgs e)
         {
             var dialog = new Microsoft.Win32.OpenFileDialog();
             dialog.DefaultExt = ".txt"; // set default file extension
@@ -50,6 +50,14 @@ namespace GoldRush
                                                    // set text block text to file name
                 selectedFileLabel.Text = filename;
                 this.filename = filename;
+                try
+                {
+                    this.maze = Utility.readFromFile(filename);
+                }
+                catch (Exception exception)
+                {
+                    selectedFileLabel.Text = "Invalid txt file!";
+                }
                 fillMatrix();
             }
             else
@@ -57,8 +65,7 @@ namespace GoldRush
                 selectedFileLabel.Text = "No file chosen";
             }
         }
-
-        private void Visualize(object sender, RoutedEventArgs e)
+        private void handleVisualize(object sender, RoutedEventArgs e)
         {
             if (selectedFileLabel.Text.Equals("No file chosen") || selectedFileLabel.Text.Equals("Invalid txt file!"))
             {
@@ -101,19 +108,17 @@ namespace GoldRush
             {
                 int numOfNodes = 0;
                 DataTable dt = new DataTable();
-                this.maze = Utility.readFromFile(filename);
-                char[,] temp = Utility.readFromFile(filename);
                 int baseWidth;
-                if (temp.GetLength(1) > temp.GetLength(0))
+                if (this.maze.GetLength(1) > this.maze.GetLength(0))
                 {
-                    baseWidth = temp.GetLength(1);
+                    baseWidth = this.maze.GetLength(1);
                 }
                 else
                 {
-                    baseWidth = temp.GetLength(0);
+                    baseWidth = this.maze.GetLength(0);
                 }
                 double cellWidth = (300.0 / baseWidth);
-                mazeGrid.Width = temp.GetLength(1) * cellWidth;
+                mazeGrid.Width = this.maze.GetLength(1) * cellWidth;
                 // Get the existing Style resource
                 Style cellStyle = (Style)FindResource("MyCellStyle");
 
@@ -128,27 +133,27 @@ namespace GoldRush
 
                 // Set the modified Style object to the DataGrid's CellStyle property
                 mazeGrid.CellStyle = newCellStyle;
-                for (int i = 0; i < temp.GetLength(1); i++)
+                for (int i = 0; i < this.maze.GetLength(1); i++)
                 {
                     dt.Columns.Add(new DataColumn(i.ToString(), typeof(int)));
                 }
-                for (int i = 0; i < temp.GetLength(0); i++)
+                for (int i = 0; i < this.maze.GetLength(0); i++)
                 {
                     DataRow row = dt.NewRow();
-                    for (int j = 0; j < temp.GetLength(1); j++)
+                    for (int j = 0; j < this.maze.GetLength(1); j++)
                     {
-                        if (temp[i, j] == 'K')
+                        if (this.maze[i, j] == 'K')
                         {
                             numOfNodes++;
                             startIdx = new int[] { i, j };
                             row[j] = 6;
                         }
-                        else if (temp[i, j] == 'T')
+                        else if (this.maze[i, j] == 'T')
                         {
                             numOfNodes++;
                             row[j] = 5;
                         }
-                        else if (temp[i, j] == 'R')
+                        else if (this.maze[i, j] == 'R')
                         {
                             numOfNodes++;
                             row[j] = 0;
@@ -160,7 +165,6 @@ namespace GoldRush
                     }
                     dt.Rows.Add(row);
                 }
-                numOfNodesLabel.Content = numOfNodes;
                 mazeGrid.DataContext = dt;
             }
             catch (Exception e)
@@ -255,7 +259,7 @@ namespace GoldRush
             int[] startIdxTemp = new int[] { startIdx[0], startIdx[1] };
             string route = "";
             int value;
-            ((DataTable)mazeGrid.DataContext).Rows[startIdxTemp[0]][startIdxTemp[1]] =  1;
+            ((DataTable)mazeGrid.DataContext).Rows[startIdxTemp[0]][startIdxTemp[1]] = 1;
             for (int i = 0; i < steps.Count; i++)
             {
                 switch (steps[i])
@@ -283,7 +287,7 @@ namespace GoldRush
 
             }
             stepsLabel.Content = stepsCount;
-            routeLabel.Content = route;
+            routeLabel.Text = route;
             executionTimeLabel.Content = executionTime + " ms";
             solutionPanel.Visibility = Visibility.Visible;
         }
@@ -347,7 +351,7 @@ namespace GoldRush
                 }
                 value = Convert.ToInt32(((DataTable)mazeGrid.DataContext).Rows[startIdxTemp[0]][startIdxTemp[1]]);
                 ((DataTable)mazeGrid.DataContext).Rows[startIdxTemp[0]][startIdxTemp[1]] = (value + 1) % 5;
-                routeLabel.Content = route;
+                routeLabel.Text = route;
                 await Task.Delay(Convert.ToInt32(animationSlider.Value));
             }
             stepsLabel.Content = stepsCount;
@@ -357,11 +361,6 @@ namespace GoldRush
             stepButton.IsEnabled = true;
             stepButton.Cursor = Cursors.Hand;
         }
-
-
-
-
-
     }
 
 }
