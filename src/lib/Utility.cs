@@ -31,7 +31,6 @@ namespace lib
                 {
                     if (matrixMap[i, j] == 'T') // Jika cell treasure
                     {
-                        Debug.WriteLine("pernah masuk sini??");
                         numOfTreasures++;
                         GraphNode node = new GraphNode(new Coordinate(i, j), 0, true);
                         graph.Add(node);
@@ -108,26 +107,47 @@ namespace lib
         {
             string[] lines = File.ReadAllLines(filename);
             string[] columns = lines[0].Split(' ');
-            char[,] ret = new char[lines.Length, columns.Length];
-            for (int i = 0; i < lines.Length; i++)
+            int row = lines.Length;
+            int col = columns.Length;
+            char[,] ret = new char[row, col];
+            int cntK = 0;
+            int cntT = 0;
+            int cntR = 0;
+            for (int i = 0; i < row; i++)
             {
                 string[] values = lines[i].Trim().Split(' ');
-                for (int j = 0; j < columns.Length; j++)
+                if (values.Length != col)
+                {
+                    throw new Exception(); // jika terdapat baris yang jumlah kolomnya berbeda
+                }
+                for (int j = 0; j < col; j++)
                 {
                     if (values[j] == "K" || values[j] == "R" || values[j] == "T" || values[j] == "X")
                     {
                         ret[i, j] = char.Parse(values[j]);
-                        Debug.WriteLine(values[j]);
-                        Debug.WriteLine(j);
-                        Debug.WriteLine(i);
+                        if (values[j] == "K")
+                        {
+                            cntK++;
+                        }
+                        if (values[j] == "R")
+                        {
+                            cntR++;
+                        }
+                        if (values[j] == "T")
+                        {
+                            cntT++;
+                        }
                     }
-                    else
+                    else // karakter selain yang diijinkan
                     {
                         throw new Exception();
                     }
                 }
             }
-            Debug.WriteLine("aaaaaaaaa");
+            if (cntK != 1 || cntT < 1 || cntR < 1)
+            { // jumlah K harus tepat 1, jumlah T harus >=1 , jumlah R harus >= 1
+                throw new Exception();
+            }
             return ret;
         }
 

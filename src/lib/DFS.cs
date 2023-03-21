@@ -17,15 +17,15 @@ namespace lib
 
         //                    Maybe solved, dalam pikiranku, aku membayangkan setelah masuk backAndForth, batas maks dikunjungi itu jadi 2
         //                    Sehingga tak perlu risaukan jika terjadi backAndForth Again, karena jalur yang akan dicari masih dalam satu route yang kontinu
-        private List<char> path;
+        private List<char> path; // path akhir
         private int numOfTreasures;
-        private int numOfNodesVisited;
+        private int numOfNodesVisited; // jumlah node yang dikunjungi
 
         private double executionTime; // in ms
 
         private List<GraphNode> graph;
 
-        private List<GraphNode> visitedNodeSequence;
+        private List<GraphNode> visitedNodeSequence; // urutan node yang dikunjungi
 
         private Stack<Route> stack;
 
