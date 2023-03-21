@@ -224,7 +224,37 @@ namespace lib
             {
                 remainingTreasures--;
             }
+            foreach (GraphNode node in this.graph)
+            {
+                Debug.WriteLine("======================");
+                Debug.WriteLine("Node: ");
+                Debug.WriteLine(node.getCoordinate().x + " " + node.getCoordinate().y);
+                Debug.WriteLine("Is Treasure: " + node.isTreasure().ToString());
+                Debug.WriteLine("Tetangga: ");
 
+                if (node.getRight() != null)
+                {
+                    Debug.Write("Kanan: ");
+                    Debug.WriteLine(node.getRight().getCoordinate().x + " " + node.getRight().getCoordinate().y);
+                }
+                if (node.getDown() != null)
+                {
+                    Debug.Write("Bawah: ");
+                    Debug.WriteLine(node.getDown().getCoordinate().x + " " + node.getDown().getCoordinate().y);
+                }
+                if (node.getLeft() != null)
+                {
+                    Debug.Write("Kiri: ");
+                    Debug.WriteLine(node.getLeft().getCoordinate().x + " " + node.getLeft().getCoordinate().y);
+                }
+                if (node.getUp() != null)
+                {
+                    Debug.Write("Atas: ");
+                    Debug.WriteLine(node.getUp().getCoordinate().x + " " + node.getUp().getCoordinate().y);
+                }
+
+                Debug.WriteLine("======================");
+            }
             Route tempRoute = new Route();
             List<char> tempPath = new List<char>();
             List<int> visitAccumulation = new List<int>(); // Menyimpan akumulasi jumlah visit
@@ -242,6 +272,8 @@ namespace lib
             tempRoute.path = tempPath;
             tempRoute.remainingTreasures = remainingTreasures;
             this.stack.Push(tempRoute); // Push rute pertama
+            Debug.WriteLine("ini yang top nya");
+            Debug.WriteLine(this.stack.Peek().node.getCoordinate().x);
 
             // Console.WriteLine("X: " + this.stack.Peek().node.getValue().x.ToString() + " Y: " + this.stack.Peek().node.getValue().y);
 
@@ -249,7 +281,7 @@ namespace lib
             cekTetangga(this.graph[0], tempPath, tempNodePath, remainingTreasures);
 
             // Loop mencari semua treasures
-            while (remainingTreasures != 0) // Akan looping hingga remaining treasures = 0
+            while (remainingTreasures != 0 && this.stack.Count>0) // Akan looping hingga remaining treasures = 0
             {
                 // Pengecekan currentNode, yaitu Peek pada stack
                 GraphNode currentNode = new GraphNode();

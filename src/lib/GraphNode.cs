@@ -42,7 +42,6 @@ namespace lib
             this.position = position;
             this.visited = visited;
             this.treasure = treasure;
-            this.treasure = false;
             this.right = null;
             this.down = null;
             this.left = null;
