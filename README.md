@@ -8,14 +8,11 @@ This project is a C# .NET project that implements BFS and DFS algorithm to solve
 
 ### Problem Description
 
-```
-Spongebob is currently in Krusty Krab which is located in a Bikini Bottom maze. 
-Spongebob wants to get all the treasures (in this case, Krabby Patty) that is spread around the maze. 
-Help Spongebob to find the path so that he can get all the Krabby Patty(s). 
-Spongebob can move RIGHT, UP, LEFT, DOWN one block at a time.
+Mr. Krabs discovered a distortion labyrinth located directly under the Krusty Krab called El Doremi, which he believes contains a number of treasures inside, and of course he wants to take the treasure. Due to the labyrinth's potential for distortion, Mr. Krabs must constantly measure the size of the labyrinth. Therefore, Mr. Krabs spends a lot of energy doing this, so he needs to figure out how he can navigate this labyrinth and obtain all the treasures easily.
+Help Mr.Krab to find the path so that he can get all the treasure(s). 
+Mr.Krab can move RIGHT, UP, LEFT, DOWN one block at a time.
 
-```
-![image](https://user-images.githubusercontent.com/91037907/226863424-8d45d678-cfb6-4202-81ef-f5ea1d5a7b6b.png)
+![image](https://user-images.githubusercontent.com/91037907/226874542-a2d3001b-2516-4140-a9c8-274a7f636b88.png)
 
 The implemented BFS and DFS algorithm have RIGHT -> UP -> LEFT -> DOWN movement priority in solving the problem. 
 
@@ -83,16 +80,16 @@ X R R R
 ```
 
 
-4. Choose the algorithm that will be used to solve the problem (BFS/DFS). You can also enable TSP to show the steps needed for Spongebob to return to Krusty Krab. Then, use the animation time slider to choose the interval between the steps shown.
+4. Choose the algorithm that will be used to solve the problem (BFS/DFS). You can also enable TSP to show the steps needed for Mr. Krabs to return to Krusty Krab. Then, use the animation time slider to choose the interval between the steps shown.
 
 5. Click the arrow button in the bottom to visualize the maze.
-![image](https://user-images.githubusercontent.com/91037907/226863939-c3e171ec-ed50-4f5d-8040-710a5936d688.png)
+![image](https://user-images.githubusercontent.com/91037907/226874641-c697b472-8c3e-4c93-b50c-fa403c71c7bf.png)
 
 6. Click `Show Solution` toggle once to show the solution. Click it again to hide the solution if you want to. 
-![image](https://user-images.githubusercontent.com/91037907/226863866-56e120a8-1ecb-4a03-ab9b-1034139020b3.png)
+![image](https://user-images.githubusercontent.com/91037907/226874714-3f271476-c748-4d78-8ecb-f6ef56541cae.png)
 
 7. Click `Show Steps` to animate the steps taken by the algorithm to solve the problem. The yellow grid in the maze represents the checked nodes.
-![image](https://user-images.githubusercontent.com/91037907/226864121-6de1c9a9-fd6a-47e0-801f-d3e07a11207e.png)
+![image](https://user-images.githubusercontent.com/91037907/226874756-b7b02cfd-f7f6-4ba2-8eae-ec53f9c0048d.png)
 
 
 ## Authors
