@@ -1,6 +1,9 @@
 using System;
+using System.IO;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
+
 namespace lib
 {
     public class Utility
@@ -30,12 +33,8 @@ namespace lib
                     {
                         numOfTreasures++;
                         GraphNode node = new GraphNode(new Coordinate(i, j), 0, true);
-
-                        Console.WriteLine(node.isTreasure());
                         graph.Add(node);
                         makeNodesRelation(node, graph);
-                        Console.WriteLine("Treasure at " + i + ", " + j);
-                        Console.WriteLine(graph[graph.Count - 1].isTreasure());
                     }
                     else if (matrixMap[i, j] == 'K') // Jika cell start
                     {
@@ -104,62 +103,92 @@ namespace lib
             }
         }
 
-        public static void Main(string[] args)
+        public static char[,] readFromFile(string filename)
         {
-            char[,] matrixMap = {
-                { 'X', 'X', 'T', 'X','T', 'X', 'T', 'X', 'X'},
-                { 'X', 'X', 'R', 'X','R', 'X', 'R', 'X', 'X'},
-                { 'K', 'R', 'R', 'R','R', 'R', 'R', 'R', 'T'},
-                { 'X', 'X', 'R', 'X','R', 'X', 'R', 'X', 'X'},
-                { 'X', 'X', 'T', 'X','T', 'X', 'T', 'X', 'X'}};
-            ArrayList graphData = getGraphData(matrixMap);
-            List<GraphNode> graph = (List<GraphNode>)graphData[0];
-            int numOfTreasures = (int)graphData[1];
-            foreach (GraphNode node in graph)
+            string[] lines = File.ReadAllLines(filename);
+            string[] columns = lines[0].Split(' ');
+            int row = lines.Length;
+            int col = columns.Length;
+            char[,] ret = new char[row, col];
+            int cntK = 0;
+            int cntT = 0;
+            int cntR = 0;
+            for (int i = 0; i < row; i++)
             {
-                Console.WriteLine("======================");
-                Console.WriteLine("Node: ");
-                Console.WriteLine(node.getCoordinate().x + " " + node.getCoordinate().y);
-                Console.WriteLine("Is Treasure: " + node.isTreasure().ToString());
-                Console.WriteLine("Tetangga: ");
-
-                if (node.getRight() != null)
+                string[] values = lines[i].Trim().Split(' ');
+                if (values.Length != col)
                 {
-                    Console.Write("Kanan: ");
-                    Console.WriteLine(node.getRight().getCoordinate().x + " " + node.getRight().getCoordinate().y);
+                    throw new Exception(); // jika terdapat baris yang jumlah kolomnya berbeda
                 }
-                if (node.getDown() != null)
+                for (int j = 0; j < col; j++)
                 {
-                    Console.Write("Bawah: ");
-                    Console.WriteLine(node.getDown().getCoordinate().x + " " + node.getDown().getCoordinate().y);
+                    if (values[j] == "K" || values[j] == "R" || values[j] == "T" || values[j] == "X")
+                    {
+                        ret[i, j] = char.Parse(values[j]);
+                        if (values[j] == "K")
+                        {
+                            cntK++;
+                        }
+                        if (values[j] == "R")
+                        {
+                            cntR++;
+                        }
+                        if (values[j] == "T")
+                        {
+                            cntT++;
+                        }
+                    }
+                    else // karakter selain yang diijinkan
+                    {
+                        throw new Exception();
+                    }
                 }
-                if (node.getLeft() != null)
-                {
-                    Console.Write("Kiri: ");
-                    Console.WriteLine(node.getLeft().getCoordinate().x + " " + node.getLeft().getCoordinate().y);
-                }
-                if (node.getUp() != null)
-                {
-                    Console.Write("Atas: ");
-                    Console.WriteLine(node.getUp().getCoordinate().x + " " + node.getUp().getCoordinate().y);
-                }
-
-                Console.WriteLine("======================");
             }
-            Console.WriteLine("Banyak Treasures: " + numOfTreasures.ToString());
-
-
-            DFS searchingDFS = new DFS(numOfTreasures, graph);
-            searchingDFS.runDFSAlgorithm();
-            Console.WriteLine("Path DFS: ");
-            List<char> pathDFS = searchingDFS.getPath();
-            for (int i = 0; i < pathDFS.Count; i++)
-            {
-                Console.Write(pathDFS[i]);
-                if (i != pathDFS.Count - 1)
-                    Console.Write("-");
+            if (cntK != 1 || cntT < 1 || cntR < 1)
+            { // jumlah K harus tepat 1, jumlah T harus >=1 , jumlah R harus >= 1
+                throw new Exception();
             }
+            return ret;
         }
+
+        // public static void Main(string[] args)
+        // {
+        //     char[,] matrixMap = { { 'X', 'X', 'X', 'X' }, { 'R', 'K', 'R', 'T' }, { 'X', 'X', 'X', 'X' } };
+        //     ArrayList graphData = getGraphData(matrixMap);
+        //     List<GraphNode> graph = (List<GraphNode>)graphData[0];
+        //     int numOfTreasures = (int)graphData[1];
+        //     foreach (GraphNode node in graph)
+        //     {
+        //         Console.WriteLine("======================");
+        //         Console.WriteLine("Node: ");
+        //         Console.WriteLine(node.getCoordinate().x + " " + node.getCoordinate().y);
+        //         Console.WriteLine("Tetangga: ");
+
+        //         if (node.getRight() != null)
+        //         {
+        //             Console.Write("Kanan: ");
+        //             Console.WriteLine(node.getRight().getCoordinate().x + " " + node.getRight().getCoordinate().y);
+        //         }
+        //         if (node.getDown() != null)
+        //         {
+        //             Console.Write("Bawah: ");
+        //             Console.WriteLine(node.getDown().getCoordinate().x + " " + node.getDown().getCoordinate().y);
+        //         }
+        //         if (node.getLeft() != null)
+        //         {
+        //             Console.Write("Kiri: ");
+        //             Console.WriteLine(node.getLeft().getCoordinate().x + " " + node.getLeft().getCoordinate().y);
+        //         }
+        //         if (node.getUp() != null)
+        //         {
+        //             Console.Write("Atas: ");
+        //             Console.WriteLine(node.getUp().getCoordinate().x + " " + node.getUp().getCoordinate().y);
+        //         }
+
+        //         Console.WriteLine("======================");
+        //     }
+        //     Console.WriteLine("Banyak Treasures: " + numOfTreasures.ToString());
+        // }
 
     }
 }
