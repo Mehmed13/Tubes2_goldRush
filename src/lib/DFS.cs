@@ -286,7 +286,7 @@ namespace lib
             cekTetangga(this.graph[0], tempPath, tempNodePath, remainingTreasures);
 
             // Loop mencari semua treasures
-            while (remainingTreasures != 0 && this.stack.Count>0) // Akan looping hingga remaining treasures = 0
+            while (remainingTreasures != 0 && this.stack.Count > 0) // Akan looping hingga remaining treasures = 0
             {
                 // Pengecekan currentNode, yaitu Peek pada stack
                 GraphNode currentNode = new GraphNode();
@@ -318,10 +318,10 @@ namespace lib
                     // Console.WriteLine("Remaining Treasures: " + currentRemainingTreasures.ToString());
                     if ((backtracking && !stopbacktracking) || (currentNode.isTreasure() && !backtracking) || currentNode.isIntersection()) // Jika backtracking simpan rute yang ditempuh ditambah direction dari current Node
                     {
+                        this.visitedNodeSequence.Add(currentNode); // tambahkan ke visitedNodeSequence
                         if (!currentNode.isTreasure())
                         {
                             currentNode.setVisited(currentNode.getVisited() + 1);
-                            this.visitedNodeSequence.Add(currentNode); // tambahkan ke visitedNodeSequence
                         }
                         backtracking = true;
                         this.stack.Peek().remainingTreasures = currentRemainingTreasures;

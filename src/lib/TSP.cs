@@ -260,22 +260,26 @@ namespace lib
                 currentNodePath = this.stack.Peek().nodePath;
                 int currentRemainingTreasures = this.stack.Peek().remainingTreasures;
 
+                // Buat seolah-olah start belum pernah dikunjungi
+                this.graph[0].setVisited(0);
+
+                // Console.WriteLine("=======");
                 // foreach (char dir in currentPath)
                 // {
                 //     Console.Write(dir);
                 // }
-
                 // Console.Write(" ");
                 // Console.WriteLine("X: " + currentNode.getCoordinate().x.ToString() + " Y: " + currentNode.getCoordinate().y);
-                // Console.WriteLine("Last node before");
-                // Console.WriteLine("X: " + currentNodePath[currentNodePath.Count - 1].getCoordinate().x.ToString() + " Y: " + currentNodePath[currentNodePath.Count - 1].getCoordinate().y);
+                // // Console.WriteLine("Last node before");
+                // // Console.WriteLine("X: " + currentNodePath[currentNodePath.Count - 1].getCoordinate().x.ToString() + " Y: " + currentNodePath[currentNodePath.Count - 1].getCoordinate().y);
                 // Console.Write("Backtracking: ");
-                // Console.WriteLine(backtracking);
-                // Console.WriteLine(this.stack.Count);
+                Console.WriteLine(backtracking);
+                Console.WriteLine(this.stack.Count);
                 if (isStartNode(currentNode)) // Jika sudah kembali ke startNode
                 {
                     // Console.WriteLine("Pernah masuk bang");
                     tempPath = currentPath;
+                    this.visitedNodeSequence.Add(currentNode); // tambahkan ke visitedNodeSequence
                     currentNodePath.Add(currentNode);
                     tempNodePath = currentNodePath;
                     backToStart = true;
@@ -287,13 +291,13 @@ namespace lib
                         Route currentRoute = new Route();
                         currentRoute = this.stack.Pop();
                         // Console.WriteLine("Remaining Treasures: " + currentRemainingTreasures.ToString());
-                        if ((backtracking && !stopbacktracking) || (currentNode.isTreasure() && !backtracking)) // Jika backtracking simpan rute yang ditempuh ditambah direction dari current Node
+                        if ((backtracking && !stopbacktracking) || (currentNode.isTreasure() && !backtracking) || currentNode.isIntersection()) // Jika backtracking simpan rute yang ditempuh ditambah direction dari current Node
                         {
                             if (!currentNode.isTreasure())
                             {
                                 currentNode.setVisited(currentNode.getVisited() + 1);
-                                this.visitedNodeSequence.Add(currentNode); // tambahkan ke visitedNodeSequence
                             }
+                            this.visitedNodeSequence.Add(currentNode); // tambahkan ke visitedNodeSequence
                             backtracking = true;
                             this.stack.Peek().remainingTreasures = currentRemainingTreasures;
                             if (currentNodePath[currentNodePath.Count - 1].isNeighbourhood(currentNode))
@@ -353,6 +357,7 @@ namespace lib
                                 backtracking = false;
                                 stopbacktracking = false;
                                 multiplevisited = true;
+                                currentNode.setIntersection(true);
                                 this.stack.Push(currentRoute); // Push agar dievaluasi ulang dalam situasi tidak backtracking
                             }
                             else

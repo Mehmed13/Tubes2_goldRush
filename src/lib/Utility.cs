@@ -150,6 +150,39 @@ namespace lib
             }
             return ret;
         }
+
+        // public static void Main()
+        // {
+        //     char[,] matrixMap = readFromFile("../../test/sampel-4.txt");
+        //     ArrayList graphData = getGraphData(matrixMap);
+        //     List<GraphNode> graph = (List<GraphNode>)graphData[0];
+        //     int numOfTreasures = (int)graphData[1];
+        //     DFS searchingDFS = new DFS(numOfTreasures, graph);
+        //     searchingDFS.runDFSAlgorithm();
+
+        //     TSP searchingTSP = new TSP(searchingDFS);
+        //     searchingTSP.runTSPDFSAlgorithm();
+
+
+        //     Console.WriteLine("Path TSP: ");
+        //     List<char> pathTSP = searchingTSP.getPath();
+        //     for (int i = 0; i < pathTSP.Count; i++)
+        //     {
+        //         Console.Write(pathTSP[i]);
+        //         if (i != pathTSP.Count - 1)
+        //             Console.Write("-");
+        //     }
+
+        //     Console.WriteLine();
+        //     Console.WriteLine("Visited Node Sequence:");
+        //     List<GraphNode> visitedNodeSequence = searchingTSP.getVisitedNodeSequence();
+        //     foreach (GraphNode visitedNode in visitedNodeSequence)
+        //     {
+        //         Console.WriteLine(visitedNode.getCoordinate().x + " " + visitedNode.getCoordinate().y + "  :" + visitedNode.getVisited().ToString());
+        //     }
+        //     Console.WriteLine("Num of visitedNodes: " + searchingTSP.getNumOfNodesVisited().ToString());
+        //     Console.WriteLine("TimeExecution: " + searchingTSP.getExecutionTime().ToString() + "ms");
+        // }
     }
 }
 
