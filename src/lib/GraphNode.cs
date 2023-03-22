@@ -128,6 +128,11 @@ namespace lib
         {
             return (this.right != null || this.down != null || this.left != null || this.up != null);
         }
+
+        public bool isNeighbourhood(GraphNode node)
+        {
+            return (this.right == node || this.down == node || this.left == node || this.up == node);
+        }
         public bool isNeighbourVisitAbleExist()
         {
             if (this.isNeighbourExist())

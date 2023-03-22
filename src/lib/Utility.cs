@@ -150,46 +150,6 @@ namespace lib
             }
             return ret;
         }
-
-        // public static void Main(string[] args)
-        // {
-        //     char[,] matrixMap = { { 'X', 'X', 'X', 'X' }, { 'R', 'K', 'R', 'T' }, { 'X', 'X', 'X', 'X' } };
-        //     ArrayList graphData = getGraphData(matrixMap);
-        //     List<GraphNode> graph = (List<GraphNode>)graphData[0];
-        //     int numOfTreasures = (int)graphData[1];
-        //     foreach (GraphNode node in graph)
-        //     {
-        //         Console.WriteLine("======================");
-        //         Console.WriteLine("Node: ");
-        //         Console.WriteLine(node.getCoordinate().x + " " + node.getCoordinate().y);
-        //         Console.WriteLine("Tetangga: ");
-
-        //         if (node.getRight() != null)
-        //         {
-        //             Console.Write("Kanan: ");
-        //             Console.WriteLine(node.getRight().getCoordinate().x + " " + node.getRight().getCoordinate().y);
-        //         }
-        //         if (node.getDown() != null)
-        //         {
-        //             Console.Write("Bawah: ");
-        //             Console.WriteLine(node.getDown().getCoordinate().x + " " + node.getDown().getCoordinate().y);
-        //         }
-        //         if (node.getLeft() != null)
-        //         {
-        //             Console.Write("Kiri: ");
-        //             Console.WriteLine(node.getLeft().getCoordinate().x + " " + node.getLeft().getCoordinate().y);
-        //         }
-        //         if (node.getUp() != null)
-        //         {
-        //             Console.Write("Atas: ");
-        //             Console.WriteLine(node.getUp().getCoordinate().x + " " + node.getUp().getCoordinate().y);
-        //         }
-
-        //         Console.WriteLine("======================");
-        //     }
-        //     Console.WriteLine("Banyak Treasures: " + numOfTreasures.ToString());
-        // }
-
     }
 }
 

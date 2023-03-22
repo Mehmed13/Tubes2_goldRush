@@ -62,7 +62,7 @@ namespace GoldRush
             }
             else
             {
-                selectedFileLabel.Text = "No file chosen"; 
+                selectedFileLabel.Text = "No file chosen";
             }
         }
         private void handleVisualize(object sender, RoutedEventArgs e)
@@ -101,7 +101,7 @@ namespace GoldRush
 
             // reset the matrix
             fillMatrix();
-            
+
             // hide solution
             solutionPanel.Visibility = Visibility.Collapsed;
         }
@@ -187,8 +187,10 @@ namespace GoldRush
         {
             fillMatrix();
             solutionPanel.Visibility = Visibility.Collapsed;
+            routeLabel.Text = "-";
             stepsLabel.Content = "-";
             executionTimeLabel.Content = "-";
+            numOfNodesLabel.Content = "-";
         }
 
         // Bonus : animate steps
@@ -214,6 +216,12 @@ namespace GoldRush
                 DFS searchingDFS = new DFS(numOfTreasures, graph);
                 searchingDFS.runDFSAlgorithm();
                 steps = searchingDFS.getVisitedNodeSequence();
+                if (TSPCheck.IsChecked == true)
+                {
+                    TSP searchingTSPDFS = new TSP(searchingDFS);
+                    searchingTSPDFS.runTSPDFSAlgorithm();
+                    steps = searchingTSPDFS.getVisitedNodeSequence();
+                }
             }
             else
             {
@@ -245,7 +253,7 @@ namespace GoldRush
             // set last to yellow
             valuePrev = Convert.ToInt32(((DataTable)mazeGrid.DataContext).Rows[steps[steps.Count - 1].getCoordinate().x][steps[steps.Count - 1].getCoordinate().y]);
             ((DataTable)mazeGrid.DataContext).Rows[steps[steps.Count - 1].getCoordinate().x][steps[steps.Count - 1].getCoordinate().y] = valuePrev % 6 + 7;
-
+           
             // after animation is done, show the solution (w/o animation)
             displaySolution();
 
@@ -268,6 +276,7 @@ namespace GoldRush
             ArrayList graphData = Utility.getGraphData(Utility.readFromFile(filename));
             List<GraphNode> graph = (List<GraphNode>)graphData[0];
             int numOfTreasures = (int)graphData[1];
+            int nodesCount = 0;
             int stepsCount = 0;
             double executionTime = 0;
             List<char> steps;
@@ -278,6 +287,16 @@ namespace GoldRush
                 steps = searchingDFS.getPath();
                 stepsCount = searchingDFS.getNumOfNodesVisited();
                 executionTime = searchingDFS.getExecutionTime();
+                nodesCount = searchingDFS.getNumOfNodesVisited();
+                if (TSPCheck.IsChecked == true)
+                {
+                    TSP searchingTSPDFS = new TSP(searchingDFS);
+                    searchingTSPDFS.runTSPDFSAlgorithm();
+                    steps = searchingTSPDFS.getPath();
+                    stepsCount = searchingTSPDFS.getNumOfNodesVisited();
+                    executionTime = searchingTSPDFS.getExecutionTime();
+                    nodesCount = searchingTSPDFS.getNumOfNodesVisited();
+                }
             }
             else
             {
@@ -286,6 +305,7 @@ namespace GoldRush
                 steps = searchingBFS.getFinalPath();
                 stepsCount = searchingBFS.getFinalPath().Count;
                 executionTime = searchingBFS.getExecutionTime();
+                nodesCount = searchingBFS.getNumOfNodesVisited();
             }
             int[] startIdxTemp = new int[] { startIdx[0], startIdx[1] };
             string route = "";
@@ -317,6 +337,7 @@ namespace GoldRush
                 ((DataTable)mazeGrid.DataContext).Rows[startIdxTemp[0]][startIdxTemp[1]] = (value + 1) % 5;
 
             }
+            numOfNodesLabel.Content = nodesCount;
             stepsLabel.Content = stepsCount;
             routeLabel.Text = route;
             executionTimeLabel.Content = executionTime + " ms";
@@ -336,6 +357,7 @@ namespace GoldRush
             ArrayList graphData = Utility.getGraphData(Utility.readFromFile(filename));
             List<GraphNode> graph = (List<GraphNode>)graphData[0];
             int numOfTreasures = (int)graphData[1];
+            int nodesCount = 0;
             int stepsCount = 0;
             double executionTime = 0;
             List<char> steps;
@@ -346,6 +368,16 @@ namespace GoldRush
                 steps = searchingDFS.getPath();
                 stepsCount = searchingDFS.getNumOfNodesVisited();
                 executionTime = searchingDFS.getExecutionTime();
+                nodesCount = searchingDFS.getNumOfNodesVisited();
+                if (TSPCheck.IsChecked == true)
+                {
+                    TSP searchingTSPDFS = new TSP(searchingDFS);
+                    searchingTSPDFS.runTSPDFSAlgorithm();
+                    steps = searchingTSPDFS.getPath();
+                    stepsCount = searchingTSPDFS.getNumOfNodesVisited();
+                    executionTime = searchingTSPDFS.getExecutionTime();
+                    nodesCount = searchingTSPDFS.getNumOfNodesVisited();
+                }
             }
             else
             {
@@ -354,15 +386,22 @@ namespace GoldRush
                 steps = searchingBFS.getFinalPath();
                 stepsCount = searchingBFS.getFinalPath().Count;
                 executionTime = searchingBFS.getExecutionTime();
+                nodesCount = searchingBFS.getNumOfNodesVisited();
             }
             solutionPanel.Visibility = Visibility.Visible;
             int[] startIdxTemp = new int[] { startIdx[0], startIdx[1] };
+            int[] prevIdx = new int[2] { startIdx[0], startIdx[1] };
             string route = "";
             int value = Convert.ToInt32(((DataTable)mazeGrid.DataContext).Rows[startIdxTemp[0]][startIdxTemp[1]]);
             ((DataTable)mazeGrid.DataContext).Rows[startIdxTemp[0]][startIdxTemp[1]] = 1;
             await Task.Delay(Convert.ToInt32(animationSlider.Value));
             for (int i = 0; i < steps.Count; i++)
             {
+                if (i != 0)
+                { // set the prev to green
+                    value = Convert.ToInt32(((DataTable)mazeGrid.DataContext).Rows[prevIdx[0]][prevIdx[1]]);
+                    ((DataTable)mazeGrid.DataContext).Rows[prevIdx[0]][prevIdx[1]] = (value + 1) % 5;
+                }
                 switch (steps[i])
                 {
                     case 'U':
@@ -383,11 +422,22 @@ namespace GoldRush
                 {
                     route += "-";
                 }
+                // set the curr to blue
                 value = Convert.ToInt32(((DataTable)mazeGrid.DataContext).Rows[startIdxTemp[0]][startIdxTemp[1]]);
-                ((DataTable)mazeGrid.DataContext).Rows[startIdxTemp[0]][startIdxTemp[1]] = (value + 1) % 5;
+                ((DataTable)mazeGrid.DataContext).Rows[startIdxTemp[0]][startIdxTemp[1]] = 6;
+                Debug.WriteLine(value);
+                // save the prev
+                prevIdx[0] = startIdxTemp[0];
+                prevIdx[1] = startIdxTemp[1];
                 routeLabel.Text = route;
                 await Task.Delay(Convert.ToInt32(animationSlider.Value));
+                // reset the value of the curr
+                ((DataTable)mazeGrid.DataContext).Rows[startIdxTemp[0]][startIdxTemp[1]] = value;
             }
+            // set last to green
+            value = Convert.ToInt32(((DataTable)mazeGrid.DataContext).Rows[startIdxTemp[0]][startIdxTemp[1]]);
+            ((DataTable)mazeGrid.DataContext).Rows[startIdxTemp[0]][startIdxTemp[1]] = (value + 1) % 5;
+            numOfNodesLabel.Content = nodesCount;
             stepsLabel.Content = stepsCount;
             executionTimeLabel.Content = executionTime + " ms";
             showSolutionToggle.IsEnabled = true;
