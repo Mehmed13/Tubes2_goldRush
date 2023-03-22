@@ -297,6 +297,7 @@ namespace lib
 
                 currentNodePath = this.stack.Peek().nodePath;
                 int currentRemainingTreasures = this.stack.Peek().remainingTreasures;
+                // Console.WriteLine("=======");
 
                 // foreach (char dir in currentPath)
                 // {
@@ -315,7 +316,7 @@ namespace lib
                     Route currentRoute = new Route();
                     currentRoute = this.stack.Pop();
                     // Console.WriteLine("Remaining Treasures: " + currentRemainingTreasures.ToString());
-                    if (((backtracking && !stopbacktracking) || (currentNode.isTreasure() && !backtracking)) && this.stack.Count > 0) // Jika backtracking simpan rute yang ditempuh ditambah direction dari current Node
+                    if ((backtracking && !stopbacktracking) || (currentNode.isTreasure() && !backtracking) || currentNode.isIntersection()) // Jika backtracking simpan rute yang ditempuh ditambah direction dari current Node
                     {
                         if (!currentNode.isTreasure())
                         {
@@ -381,6 +382,7 @@ namespace lib
                             backtracking = false;
                             stopbacktracking = false;
                             multiplevisited = true;
+                            currentNode.setIntersection(true);
                             this.stack.Push(currentRoute); // Push agar dievaluasi ulang dalam situasi tidak backtracking
                         }
                         else
@@ -441,7 +443,6 @@ namespace lib
                         this.stack.Peek().path = currentPath;
                     }
                 }
-
 
             }
 

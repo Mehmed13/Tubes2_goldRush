@@ -8,6 +8,8 @@ namespace lib
         private int visited;
 
         private bool treasure;
+
+        private bool intersection;
         private GraphNode right;
         private GraphNode down;
         private GraphNode left;
@@ -19,6 +21,7 @@ namespace lib
             this.position = null;
             this.visited = 0;
             this.treasure = false;
+            this.intersection = false;
             this.right = null;
             this.down = null;
             this.left = null;
@@ -30,7 +33,7 @@ namespace lib
             this.position = position;
             this.visited = 0;
             this.treasure = false;
-            this.treasure = false;
+            this.intersection = false;
             this.right = null;
             this.down = null;
             this.left = null;
@@ -42,6 +45,7 @@ namespace lib
             this.position = position;
             this.visited = visited;
             this.treasure = treasure;
+            this.intersection = false;
             this.right = null;
             this.down = null;
             this.left = null;
@@ -53,6 +57,7 @@ namespace lib
             this.position = position;
             this.visited = visited;
             this.treasure = treasure;
+            this.intersection = false;
             this.right = right;
             this.down = down;
             this.left = left;
@@ -73,6 +78,11 @@ namespace lib
         public bool isTreasure()
         {
             return this.treasure;
+        }
+
+        public bool isIntersection()
+        {
+            return this.intersection;
         }
 
         public GraphNode getRight()
@@ -106,6 +116,11 @@ namespace lib
         public void setTreasure(bool treasure)
         {
             this.treasure = treasure;
+        }
+
+        public void setIntersection(bool intersection)
+        {
+            this.intersection = intersection;
         }
         public void setRight(GraphNode right)
         {
