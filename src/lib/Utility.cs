@@ -107,7 +107,7 @@ namespace lib
                 {'K', 'R', 'R', 'R', 'X'},
                 {'X', 'R', 'X', 'T', 'T'},
                 {'X', 'R', 'R', 'R', 'X'},
-                {'X', 'R', 'X', 'X', 'X'}
+                {'X', 'T', 'X', 'T', 'X'}
             };
 
             ArrayList graphData = getGraphData(matrixMap);
