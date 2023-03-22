@@ -226,7 +226,14 @@ namespace GoldRush
             else
             {
                 BFS searchingBFS = new BFS(numOfTreasures, graph[0]);
-                searchingBFS.runBFSAlgorithm(this.maze.GetLength(0), this.maze.GetLength(1));
+                if (TSPCheck.IsChecked == true)
+                {
+                    searchingBFS.runTSPBFSAlgorithm(this.maze.GetLength(0), this.maze.GetLength(1));
+                }
+                else
+                {
+                    searchingBFS.runBFSAlgorithm(this.maze.GetLength(0), this.maze.GetLength(1));
+                }
                 steps = searchingBFS.getVisitedNodeSequence();
             }
 
@@ -301,7 +308,14 @@ namespace GoldRush
             else
             {
                 BFS searchingBFS = new BFS(numOfTreasures, graph[0]);
-                searchingBFS.runBFSAlgorithm(maze.GetLength(0), maze.GetLength(1));
+                if (TSPCheck.IsChecked == true)
+                {
+                    searchingBFS.runTSPBFSAlgorithm(maze.GetLength(0), maze.GetLength(1));
+                }
+                else
+                {
+                    searchingBFS.runBFSAlgorithm(maze.GetLength(0), maze.GetLength(1));
+                }
                 steps = searchingBFS.getFinalPath();
                 stepsCount = searchingBFS.getFinalPath().Count;
                 executionTime = searchingBFS.getExecutionTime();
@@ -382,7 +396,14 @@ namespace GoldRush
             else
             {
                 BFS searchingBFS = new BFS(numOfTreasures, graph[0]);
-                searchingBFS.runBFSAlgorithm(maze.GetLength(0), maze.GetLength(1));
+                if (TSPCheck.IsChecked == true)
+                {
+                    searchingBFS.runTSPBFSAlgorithm(maze.GetLength(0), maze.GetLength(1));
+                }
+                else
+                {
+                    searchingBFS.runBFSAlgorithm(maze.GetLength(0), maze.GetLength(1));
+                }
                 steps = searchingBFS.getFinalPath();
                 stepsCount = searchingBFS.getFinalPath().Count;
                 executionTime = searchingBFS.getExecutionTime();
@@ -425,7 +446,7 @@ namespace GoldRush
                 // set the curr to blue
                 value = Convert.ToInt32(((DataTable)mazeGrid.DataContext).Rows[startIdxTemp[0]][startIdxTemp[1]]);
                 ((DataTable)mazeGrid.DataContext).Rows[startIdxTemp[0]][startIdxTemp[1]] = 6;
-                Debug.WriteLine(value);
+
                 // save the prev
                 prevIdx[0] = startIdxTemp[0];
                 prevIdx[1] = startIdxTemp[1];

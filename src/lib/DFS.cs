@@ -235,37 +235,6 @@ namespace lib
             {
                 remainingTreasures--;
             }
-            foreach (GraphNode node in this.graph)
-            {
-                Debug.WriteLine("======================");
-                Debug.WriteLine("Node: ");
-                Debug.WriteLine(node.getCoordinate().x + " " + node.getCoordinate().y);
-                Debug.WriteLine("Is Treasure: " + node.isTreasure().ToString());
-                Debug.WriteLine("Tetangga: ");
-
-                if (node.getRight() != null)
-                {
-                    Debug.Write("Kanan: ");
-                    Debug.WriteLine(node.getRight().getCoordinate().x + " " + node.getRight().getCoordinate().y);
-                }
-                if (node.getDown() != null)
-                {
-                    Debug.Write("Bawah: ");
-                    Debug.WriteLine(node.getDown().getCoordinate().x + " " + node.getDown().getCoordinate().y);
-                }
-                if (node.getLeft() != null)
-                {
-                    Debug.Write("Kiri: ");
-                    Debug.WriteLine(node.getLeft().getCoordinate().x + " " + node.getLeft().getCoordinate().y);
-                }
-                if (node.getUp() != null)
-                {
-                    Debug.Write("Atas: ");
-                    Debug.WriteLine(node.getUp().getCoordinate().x + " " + node.getUp().getCoordinate().y);
-                }
-
-                Debug.WriteLine("======================");
-            }
             Route tempRoute = new Route();
             List<char> tempPath = new List<char>();
 

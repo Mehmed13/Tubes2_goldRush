@@ -311,7 +311,9 @@
                         <StackPanel Grid.Column="0" Orientation="Vertical">
                             <StackPanel Orientation="Horizontal" Width="auto">
                                 <Label Foreground="White" VerticalAlignment="Top" FontFamily="Raleway" FontSize="14" FontWeight="Medium">Route</Label>
-                                <TextBlock Foreground="White" Margin="10,5,0,0" Width="200" VerticalAlignment="Top" TextWrapping="WrapWithOverflow" x:Name="routeLabel" FontFamily="Raleway" FontSize="14" FontWeight="Normal" Text="-"/>
+                                <ScrollViewer MaxHeight="20" VerticalScrollBarVisibility="Auto" Width="250">
+                                    <TextBlock Foreground="White" Margin="10,5,0,0" TextWrapping="Wrap" x:Name="routeLabel" FontFamily="Raleway" FontSize="14" FontWeight="Normal" Text="-"/>
+                                </ScrollViewer>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
                                 <Label Foreground="White" FontFamily="Raleway" FontSize="14" FontWeight="Medium">Nodes</Label>
