@@ -41,7 +41,10 @@ This project is built to meet the following [guidelines](https://docs.google.com
 ```
  $ dotnet build -o ../bin
 ```
-
+or to build and run
+```
+ $ dotnet run -o ../bin
+```
 4. The resulting executable file will be located at the `bin` directory.
 
 ## How To Run
@@ -54,12 +57,6 @@ This project is built to meet the following [guidelines](https://docs.google.com
 ```
 
 2. Enter the following command to run the program.
-
-```
- $ dotnet run
-```
-
-or
 
 ```
  $ ./GoldRush.exe
