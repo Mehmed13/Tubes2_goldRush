@@ -10,11 +10,11 @@ This project is a C# .NET project that implements BFS and DFS algorithm to solve
 
 Mr. Krabs discovered a distortion labyrinth located directly under the Krusty Krab called El Doremi, which he believes contains a number of treasures inside, and of course he wants to take the treasure. Due to the labyrinth's potential for distortion, Mr. Krabs must constantly measure the size of the labyrinth. Therefore, Mr. Krabs spends a lot of energy doing this, so he needs to figure out how he can navigate this labyrinth and obtain all the treasures easily.
 Help Mr.Krab to find the path so that he can get all the treasure(s). 
-Mr.Krab can move RIGHT, UP, LEFT, DOWN one block at a time.
+Mr.Krab can move RIGHT, DOWN, LEFT, UP one block at a time.
 
 ![image](https://user-images.githubusercontent.com/91037907/226874542-a2d3001b-2516-4140-a9c8-274a7f636b88.png)
 
-The implemented BFS and DFS algorithm have RIGHT -> UP -> LEFT -> DOWN movement priority in solving the problem. 
+The implemented BFS and DFS algorithm have RIGHT -> DOWN -> LEFT -> UP movement priority in solving the problem. 
 
 This project is built to meet the following [guidelines](https://docs.google.com/document/d/1lAUaI6PsZK089rcWfaTYRgMwNwe3wvDbGdIdJrLatEU/edit).
 
