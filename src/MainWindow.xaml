@@ -51,7 +51,7 @@
                         <Setter.Value>
                             <ControlTemplate TargetType="{x:Type DataGridCell}">
                                 <Border Background="{TemplateBinding Background}">
-                                    <Image x:Name="krabby" Source="/assets/krabby.png" Width="30" Height="30"/>
+                                    <Image x:Name="money" Source="/assets/money.png" Width="40" Height="40"/>
                                 </Border>
                             </ControlTemplate>
                         </Setter.Value>
@@ -64,7 +64,7 @@
                         <Setter.Value>
                             <ControlTemplate TargetType="{x:Type DataGridCell}">
                                 <Border Background="{TemplateBinding Background}">
-                                    <Image Source="/assets/spongebob.png" x:Name="character" Width="50" Height="50"/>
+                                    <Image Source="/assets/mr_krabs.png" x:Name="character" Width="60" Height="60"/>
                                 </Border>
                             </ControlTemplate>
                         </Setter.Value>

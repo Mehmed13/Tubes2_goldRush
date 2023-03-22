@@ -8,13 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="assets\money.png" />
-    <None Remove="assets\mr_krabs.png" />
+    <None Remove="assets\krabby.png" />
+    <None Remove="assets\spongebob.png" />
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="assets\money.png" />
-    <Resource Include="assets\mr_krabs.png" />
+    <Resource Include="assets\krabby.png" />
+    <Resource Include="assets\spongebob.png" />
   </ItemGroup>
 
 </Project>
