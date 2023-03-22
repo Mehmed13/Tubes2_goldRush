@@ -103,10 +103,11 @@ namespace lib
         public static void Main(string[] args)
         {
             char[,] matrixMap = {
-                {'K', 'R', 'R', 'R'},
-                {'X', 'R', 'X', 'T'},
-                {'X', 'T', 'R', 'R'},
-                {'X', 'R', 'X', 'X'}
+                {'T', 'R' ,'R' ,'T' ,'X'},
+                {'K', 'R', 'R', 'R', 'X'},
+                {'X', 'R', 'X', 'T', 'T'},
+                {'X', 'R', 'R', 'R', 'X'},
+                {'X', 'R', 'X', 'X', 'X'}
             };
 
             ArrayList graphData = getGraphData(matrixMap);
@@ -148,7 +149,7 @@ namespace lib
 
             DFS searchingDFS = new DFS(numOfTreasures, graph);
             searchingDFS.runDFSAlgorithm();
-            Stack<Route> stack = new Stack<Route>(searchingDFS.getStack());
+
             TSP searchingTSP = new TSP(searchingDFS);
             searchingTSP.runTSPDFSAlgorithm();
 
