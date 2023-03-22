@@ -316,7 +316,7 @@ namespace lib
                     Route currentRoute = new Route();
                     currentRoute = this.stack.Pop();
                     // Console.WriteLine("Remaining Treasures: " + currentRemainingTreasures.ToString());
-                    if ((backtracking && !stopbacktracking) || (currentNode.isTreasure() && !backtracking) || currentNode.isIntersection()) // Jika backtracking simpan rute yang ditempuh ditambah direction dari current Node
+                    if ((backtracking && !stopbacktracking) || (currentNode.isTreasure() && !backtracking) || (currentNode.isIntersection() && !currentNode.isNeighbourVisitAbleExist())) // Jika backtracking simpan rute yang ditempuh ditambah direction dari current Node
                     {
                         this.visitedNodeSequence.Add(currentNode); // tambahkan ke visitedNodeSequence
                         if (!currentNode.isTreasure())

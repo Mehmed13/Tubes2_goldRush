@@ -153,7 +153,7 @@ namespace lib
 
         // public static void Main()
         // {
-        //     char[,] matrixMap = readFromFile("../../test/sampel-4.txt");
+        //     char[,] matrixMap = readFromFile("../../test/test3.txt");
         //     ArrayList graphData = getGraphData(matrixMap);
         //     List<GraphNode> graph = (List<GraphNode>)graphData[0];
         //     int numOfTreasures = (int)graphData[1];
