@@ -37,10 +37,6 @@ namespace lib
             return this.visitedNodes;
         }
 
-        // public void setRoute(Route route)
-        // {
-        //     this.route = route;
-        // }
 
         public void setVisitedNodes(int row, int col, int value)
         {

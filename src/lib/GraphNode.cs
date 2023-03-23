@@ -185,18 +185,5 @@ namespace lib
             return false;
         }
 
-        // static void Main(string[] args)
-        // {
-        //     GraphNode node1 = new GraphNode(1);
-        //     GraphNode node2 = new GraphNode();
-        //     GraphNode node3 = new GraphNode(3, 1);
-        //     GraphNode node4 = new GraphNode(4, 0, node1, node2, node3, null);
-        //     Console.WriteLine(node4.getValue());
-        //     Console.WriteLine(node4.getVisited());
-        //     Console.WriteLine(node4.getRight().getValue());
-        //     Console.WriteLine(node4.getDown().getValue());
-        //     Console.WriteLine(node4.getLeft().getValue());
-
-        // }
     }
 }

@@ -427,11 +427,5 @@ namespace lib
             }
 
         }
-
-        // static void Main(string[] args)
-        // {
-        //     System.Console.WriteLine("DFS Algorithm!");
-
-        // }
     }
 }
