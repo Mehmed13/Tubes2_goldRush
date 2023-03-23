@@ -8,19 +8,19 @@
     "net6.0-windows7.0": []
   },
   "packageFolders": {
-    "C:\\Users\\LENOVO\\.nuget\\packages\\": {}
+    "C:\\Users\\rache\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\KULIAH\\SEMESTER 4\\Strategi Algoritma\\Tugas Besar\\Tubes2_goldRush\\src\\GoldRush.csproj",
+      "projectUniqueName": "D:\\lessons\\SEM 4\\STRATEGI ALGORITMA\\TUBES\\2\\Tubes2_goldRush\\src\\GoldRush.csproj",
       "projectName": "GoldRush",
-      "projectPath": "D:\\KULIAH\\SEMESTER 4\\Strategi Algoritma\\Tugas Besar\\Tubes2_goldRush\\src\\GoldRush.csproj",
-      "packagesPath": "C:\\Users\\LENOVO\\.nuget\\packages\\",
-      "outputPath": "D:\\KULIAH\\SEMESTER 4\\Strategi Algoritma\\Tugas Besar\\Tubes2_goldRush\\src\\obj\\",
+      "projectPath": "D:\\lessons\\SEM 4\\STRATEGI ALGORITMA\\TUBES\\2\\Tubes2_goldRush\\src\\GoldRush.csproj",
+      "packagesPath": "C:\\Users\\rache\\.nuget\\packages\\",
+      "outputPath": "D:\\lessons\\SEM 4\\STRATEGI ALGORITMA\\TUBES\\2\\Tubes2_goldRush\\src\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\LENOVO\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\rache\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
