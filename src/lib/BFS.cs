@@ -86,7 +86,6 @@ namespace lib
         }
 
         // Method
-
         public void runBFSAlgorithm(int row, int col)
         {
             var watch = Stopwatch.StartNew(); // timer
@@ -94,8 +93,6 @@ namespace lib
             int remainingTreasures = this.numOfTreasures;
             while (remainingTreasures != 0)
             {
-                Console.Write("Sisa treasure: ");
-                Console.WriteLine(remainingTreasures);
                 // Matrix visited = new Matrix(row, col);
                 List<char> newPath = new List<char>();
                 List<GraphNode> newNodePath = new List<GraphNode>();
@@ -106,29 +103,19 @@ namespace lib
                 bool found = false;
                 while (!found)
                 {
-
                     ElementQueue headElement = this.queue.Dequeue();
-                    Console.WriteLine("===========> MENGECEK KOORDINAT :");
-                    Console.Write("x: ");
-                    Console.WriteLine(headElement.route.node.getCoordinate().x);
-                    Console.Write("y: ");
-                    Console.WriteLine(headElement.route.node.getCoordinate().y);
+                    
                     // Check if the headElement's last node is treasure
                     if (headElement.route.node.isTreasure())
                     {
                         found = true;
                         finalPath.AddRange(headElement.route.path);
-                        Console.WriteLine("========= KOORDINAT TREASURE ==========");
-                        Console.Write("x: ");
-                        Console.WriteLine(headElement.route.node.getCoordinate().x);
-                        Console.Write("y: ");
-                        Console.WriteLine(headElement.route.node.getCoordinate().y);
 
                         if (remainingTreasures == 1)
                         {
                             this.addVisitedNodeSequence(headElement.route.node);
                             this.setNumOfNodesVisited(this.getNumOfNodesVisited() + 1);
-                            Console.WriteLine("treasure terakhir");
+
                             foreach (GraphNode n in headElement.route.nodePath)
                             {
                                 n.setVisited(n.getVisited() + 1);
@@ -136,7 +123,6 @@ namespace lib
                         }
                         else
                         {
-                            Console.WriteLine("treasure masih ada");
                             for (int i = 0; i < headElement.route.nodePath.Count - 1; i++)  // the last element is considered not visited because it'll be done in the next iteration
                             {
                                 headElement.route.nodePath[i].setVisited(headElement.route.nodePath[i].getVisited() + 1);
@@ -146,13 +132,11 @@ namespace lib
 
                         remainingTreasures--;
                         queue.Clear();
-
                     }
                     else
                     {
                         this.addVisitedNodeSequence(headElement.route.node);
                         this.setNumOfNodesVisited(this.getNumOfNodesVisited() + 1);
-                        Console.WriteLine("not treasure");
                         headElement.visitedNodes.setElement(headElement.route.node.getCoordinate().x, headElement.route.node.getCoordinate().y, 1);
                     }
                     headElement.route.node.setTreasure(false);
@@ -160,12 +144,9 @@ namespace lib
                     // RIGHT NODE
                     if (!found && headElement.route.node.getRight() != null && headElement.visitedNodes.getElement(headElement.route.node.getRight().getCoordinate().x, headElement.route.node.getRight().getCoordinate().y) == 0)
                     {
-                        Console.Write("Masuk Kanan ");
                         // Initialize new ElementQueue
                         ElementQueue newElement = new ElementQueue();
                         newElement.route.path = new List<char>(headElement.route.path);
-                        Console.WriteLine(headElement.route.path.Count);
-                        Console.WriteLine("Kanan");
 
                         newElement.route.path.Add('R');
 
@@ -183,12 +164,9 @@ namespace lib
                     // DOWN NODE
                     if (!found && headElement.route.node.getDown() != null && headElement.visitedNodes.getElement(headElement.route.node.getDown().getCoordinate().x, headElement.route.node.getDown().getCoordinate().y) == 0)
                     {
-                        Console.Write("Masuk Bawah ");
                         // Initialize new ElementQueue
                         ElementQueue newElement = new ElementQueue();
                         newElement.route.path = new List<char>(headElement.route.path);
-                        Console.WriteLine(headElement.route.path.Count);
-                        Console.WriteLine("Bawah");
                         newElement.route.path.Add('D');
 
                         newElement.route.nodePath = new List<GraphNode>(headElement.route.nodePath);
@@ -205,12 +183,9 @@ namespace lib
                     // LEFT NODE
                     if (!found && headElement.route.node.getLeft() != null && headElement.visitedNodes.getElement(headElement.route.node.getLeft().getCoordinate().x, headElement.route.node.getLeft().getCoordinate().y) == 0)
                     {
-                        Console.Write("Masuk Kiri ");
                         // Initialize new ElementQueue
                         ElementQueue newElement = new ElementQueue();
                         newElement.route.path = new List<char>(headElement.route.path);
-                        Console.WriteLine(headElement.route.path.Count);
-                        Console.WriteLine("Kiri");
                         newElement.route.path.Add('L');
 
                         newElement.route.nodePath = new List<GraphNode>(headElement.route.nodePath);
@@ -227,12 +202,9 @@ namespace lib
                     // UP NODE
                     if (!found && headElement.route.node.getUp() != null && headElement.visitedNodes.getElement(headElement.route.node.getUp().getCoordinate().x, headElement.route.node.getUp().getCoordinate().y) == 0)
                     {
-                        Console.Write("Masuk Atas ");
                         // Initialize new ElementQueue
                         ElementQueue newElement = new ElementQueue();
                         newElement.route.path = new List<char>(headElement.route.path);
-                        Console.WriteLine(headElement.route.path.Count);
-                        Console.WriteLine("Atas");
                         newElement.route.path.Add('U');
 
                         newElement.route.nodePath = new List<GraphNode>(headElement.route.nodePath);
@@ -252,17 +224,6 @@ namespace lib
             // Finishing
             watch.Stop();
             this.executionTime = watch.ElapsedMilliseconds;
-
-            Console.Write("Path menuju treasure: ");
-            foreach (char dir in this.finalPath)
-            {
-                Console.Write(dir);
-            }
-            Console.WriteLine("");
-
-            Console.Write("Waktu: ");
-            Console.Write(this.executionTime);
-            Console.WriteLine(" ms");
         }
 
         public void runTSPBFSAlgorithm(int row, int col)
@@ -273,11 +234,8 @@ namespace lib
             this.runBFSAlgorithm(row, col);
             GraphNode tempStartNode = this.visitedNodeSequence[this.visitedNodeSequence.Count - 1];
             int remainingTreasures = this.numOfTreasures;
-            // 
-            // Matrix visited = new Matrix(row, col);
             List<char> newPath = new List<char>();
             List<GraphNode> newNodePath = new List<GraphNode>();
-            // newNodePath.Add(tempStartNode);
 
             ElementQueue firstElement = new ElementQueue(row, col, newPath, newNodePath, tempStartNode, 0);
             queue.Enqueue(firstElement);
@@ -286,38 +244,28 @@ namespace lib
             while (!found && this.queue.Count > 0)
             {
                 ElementQueue headElement = this.queue.Dequeue();
-                // Check if the headElement's last node is treasure
+                // Check if the headElement's last node is start node
                 if (headElement.route.node.getCoordinate().x == startNode.getCoordinate().x && headElement.route.node.getCoordinate().y == startNode.getCoordinate().y)
                 {
                     found = true;
 
                     finalPath.AddRange(headElement.route.path);
-                    Console.WriteLine("========= KOORDINAT START NODE ==========");
-                    Console.Write("x: ");
-                    Console.WriteLine(headElement.route.node.getCoordinate().x);
-                    Console.Write("y: ");
-                    Console.WriteLine(headElement.route.node.getCoordinate().y);
-
 
                     this.addVisitedNodeSequence(headElement.route.node);
                     this.setNumOfNodesVisited(this.getNumOfNodesVisited() + 1);
-                    Console.WriteLine("treasure terakhir");
                     foreach (GraphNode n in headElement.route.nodePath)
                     {
                         n.setVisited(n.getVisited() + 1);
                     }
 
-
                     tempStartNode = headElement.route.node;
                     remainingTreasures--;
                     queue.Clear();
-
                 }
                 else
                 {
                     this.addVisitedNodeSequence(headElement.route.node);
                     this.setNumOfNodesVisited(this.getNumOfNodesVisited() + 1);
-                    Console.WriteLine("not treasure");
                     headElement.visitedNodes.setElement(headElement.route.node.getCoordinate().x, headElement.route.node.getCoordinate().y, 1);
                 }
                 headElement.route.node.setTreasure(false);
@@ -325,13 +273,9 @@ namespace lib
                 // RIGHT NODE
                 if (!found && headElement.route.node.getRight() != null && headElement.visitedNodes.getElement(headElement.route.node.getRight().getCoordinate().x, headElement.route.node.getRight().getCoordinate().y) == 0)
                 {
-                    Debug.Write("Masuk Kanan ");
                     // Initialize new ElementQueue
                     ElementQueue newElement = new ElementQueue();
                     newElement.route.path = new List<char>(headElement.route.path);
-                    Debug.WriteLine(headElement.route.path.Count);
-                    Debug.WriteLine("Kanan");
-
                     newElement.route.path.Add('R');
 
                     newElement.route.nodePath = new List<GraphNode>(headElement.route.nodePath);
@@ -348,12 +292,9 @@ namespace lib
                 // DOWN NODE
                 if (!found && headElement.route.node.getDown() != null && headElement.visitedNodes.getElement(headElement.route.node.getDown().getCoordinate().x, headElement.route.node.getDown().getCoordinate().y) == 0)
                 {
-                    Console.Write("Masuk Bawah ");
                     // Initialize new ElementQueue
                     ElementQueue newElement = new ElementQueue();
                     newElement.route.path = new List<char>(headElement.route.path);
-                    Console.WriteLine(headElement.route.path.Count);
-                    Console.WriteLine("Bawah");
                     newElement.route.path.Add('D');
 
                     newElement.route.nodePath = new List<GraphNode>(headElement.route.nodePath);
@@ -370,12 +311,9 @@ namespace lib
                 // LEFT NODE
                 if (!found && headElement.route.node.getLeft() != null && headElement.visitedNodes.getElement(headElement.route.node.getLeft().getCoordinate().x, headElement.route.node.getLeft().getCoordinate().y) == 0)
                 {
-                    Console.Write("Masuk Kiri ");
                     // Initialize new ElementQueue
                     ElementQueue newElement = new ElementQueue();
                     newElement.route.path = new List<char>(headElement.route.path);
-                    Console.WriteLine(headElement.route.path.Count);
-                    Console.WriteLine("Kiri");
                     newElement.route.path.Add('L');
 
                     newElement.route.nodePath = new List<GraphNode>(headElement.route.nodePath);
@@ -392,12 +330,9 @@ namespace lib
                 // UP NODE
                 if (!found && headElement.route.node.getUp() != null && headElement.visitedNodes.getElement(headElement.route.node.getUp().getCoordinate().x, headElement.route.node.getUp().getCoordinate().y) == 0)
                 {
-                    Console.Write("Masuk Atas ");
                     // Initialize new ElementQueue
                     ElementQueue newElement = new ElementQueue();
                     newElement.route.path = new List<char>(headElement.route.path);
-                    Console.WriteLine(headElement.route.path.Count);
-                    Console.WriteLine("Atas");
                     newElement.route.path.Add('U');
 
                     newElement.route.nodePath = new List<GraphNode>(headElement.route.nodePath);
@@ -414,24 +349,9 @@ namespace lib
 
             } // found
 
-
             // Finishing
             watch.Stop();
             this.executionTime = watch.ElapsedMilliseconds;
-
-            Console.Write("Path menuju treasure: ");
-            foreach (char dir in this.finalPath)
-            {
-                Console.Write(dir);
-            }
-            Console.WriteLine("");
-
-            Console.Write("Waktu: ");
-            Console.Write(this.executionTime);
-            Console.WriteLine(" ms");
         }
-
-
-
     }
 }

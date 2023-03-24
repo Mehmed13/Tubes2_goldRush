@@ -3,11 +3,12 @@ namespace lib
 {
     class Matrix
     {
+        // Attribute
         private int row;
         private int col;
         private int[,] elements;
 
-        //Constructor
+        // Constructor
         public Matrix(int row, int col)
         {
             this.row = row;
@@ -24,10 +25,14 @@ namespace lib
             }
 
         }   
-        public int getRow(){
+        
+        // Getter
+        public int getRow()
+        {
             return this.row;
         }
-        public int getCol(){
+        public int getCol()
+        {
             return this.col;
         }
 
@@ -36,6 +41,7 @@ namespace lib
             return elements[row, col];
         }
 
+        // Setter
         public void setElement(int row, int col, int value) 
         {
             elements[row, col] = value;

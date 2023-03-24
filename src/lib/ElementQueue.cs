@@ -4,16 +4,22 @@ namespace lib
 {
     class ElementQueue 
     {
+        // Attributes
+        // Fields atribut route dan viistedNodes akan terus menerus diubah saat pemrosesan
+        // Demi tercapainya efisiensi, atribut-atribut ini dideklarasi secara public sesuai dengan hukum Amdahl
         public Route route;
         public Matrix visitedNodes;
 
-        public ElementQueue(){
-            // nothing
+        // Constructor
+        public ElementQueue()
+        {
             this.route = new Route();
             this.visitedNodes = new Matrix(0,0);
         }
         
-        public ElementQueue(int row, int col, List<char> path, List<GraphNode> nodePath, GraphNode lastNode, int remainingTreasures){
+        // Parameterized Constructor
+        public ElementQueue(int row, int col, List<char> path, List<GraphNode> nodePath, GraphNode lastNode, int remainingTreasures)
+        {
             //construct route
             this.route = new Route();
             this.route.path = path;
@@ -23,24 +29,7 @@ namespace lib
 
             // construct matrix
             this.visitedNodes = new Matrix(row, col);
-            
-            
-        }
-
-        public Route getRoute()
-        {
-            return this.route;
-        }
-
-        public Matrix getVisitedNodes()
-        {
-            return this.visitedNodes;
-        }
-
-
-        public void setVisitedNodes(int row, int col, int value)
-        {
-            this.visitedNodes.setElement(row,col,value);
+              
         }
     }   
 
