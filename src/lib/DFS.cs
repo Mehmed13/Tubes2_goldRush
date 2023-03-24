@@ -137,14 +137,6 @@ namespace lib
         private void cekTetangga(GraphNode currentNode, List<char> currentPath, List<GraphNode> currentNodePath, int currentRemainingTreasures)
         {
             int maxVisited = 1;
-            // if (backAndForth)
-            // {
-            //     maxVisited = 2;
-            // }
-            // else
-            // {
-            //     maxVisited = 1;
-            // }
 
             // Tambahkan tetangga yang belum pernah visited ke dalam stack
             // Pada stack, prioritas tertinggi ditambahkan terakhir
@@ -249,8 +241,6 @@ namespace lib
             this.stack.Push(tempRoute); // Push rute pertama
             this.visitedNodeSequence.Add(this.graph[0]); // Tambahkan node pertama ke visitedNodeSequence
 
-            // Console.WriteLine("X: " + this.stack.Peek().node.getValue().x.ToString() + " Y: " + this.stack.Peek().node.getValue().y);
-
             // Pengecekan tetangga untuk node pertama
             cekTetangga(this.graph[0], tempPath, tempNodePath, remainingTreasures);
 
@@ -266,19 +256,6 @@ namespace lib
 
                 currentNodePath = this.stack.Peek().nodePath;
                 int currentRemainingTreasures = this.stack.Peek().remainingTreasures;
-                // Console.WriteLine("=======");
-
-                // foreach (char dir in currentPath)
-                // {
-                //     Console.Write(dir);
-                // }
-
-                // Console.Write(" ");
-                // Console.WriteLine("X: " + currentNode.getCoordinate().x.ToString() + " Y: " + currentNode.getCoordinate().y);
-                // Console.Write("Backtracking: ");
-                // Console.WriteLine(backtracking);
-                // Console.WriteLine(stopbacktracking);
-                // Console.WriteLine(this.stack.Count);
 
                 if (currentNode.getVisited() > 0 && !multiplevisited)
                 { // Jika sudah pernah dikunjungi, pop route dari stack
@@ -374,8 +351,6 @@ namespace lib
                         this.stack.Peek().path = currentPath;
                         this.stack.Peek().nodePath = currentNodePath;
                         this.stack.Peek().remainingTreasures = currentRemainingTreasures;
-                        // Console.Write("Visited: ");
-                        // Console.WriteLine(currentNode.getVisited().ToString());
                         continue;
                     }
 
@@ -393,7 +368,6 @@ namespace lib
                             tempPath = currentPath;
                             currentNodePath.Add(currentNode);
                             tempNodePath = currentNodePath;
-                            // Console.WriteLine("Remaining Treasures saat kedetect: " + currentRemainingTreasures.ToString());
                             continue;
                         }
                     }
@@ -402,7 +376,6 @@ namespace lib
                     if (currentNode.isNeighbourVisitAbleExist())
                     {
                         // Pengecekan tetangga untuk node yang sedang dikunjungi
-                        // Console.WriteLine("Ko iyo ko");
                         cekTetangga(currentNode, currentPath, currentNodePath, currentRemainingTreasures);
                     }
                     else
