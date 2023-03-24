@@ -240,7 +240,6 @@ namespace lib
             ElementQueue firstElement = new ElementQueue(row, col, newPath, newNodePath, tempStartNode, 0);
             queue.Enqueue(firstElement);
             bool found = false;
-            int x = 0;
             while (!found && this.queue.Count > 0)
             {
                 ElementQueue headElement = this.queue.Dequeue();
@@ -268,7 +267,6 @@ namespace lib
                     this.setNumOfNodesVisited(this.getNumOfNodesVisited() + 1);
                     headElement.visitedNodes.setElement(headElement.route.node.getCoordinate().x, headElement.route.node.getCoordinate().y, 1);
                 }
-                headElement.route.node.setTreasure(false);
 
                 // RIGHT NODE
                 if (!found && headElement.route.node.getRight() != null && headElement.visitedNodes.getElement(headElement.route.node.getRight().getCoordinate().x, headElement.route.node.getRight().getCoordinate().y) == 0)
@@ -345,8 +343,6 @@ namespace lib
                     // Enqueue newElement to queue
                     queue.Enqueue(newElement);
                 }
-                x++;
-
             } // found
 
             // Finishing
