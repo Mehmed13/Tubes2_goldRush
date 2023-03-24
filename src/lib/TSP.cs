@@ -8,15 +8,7 @@ namespace lib
     {
         // PRIORITAS DRIECTIONS : RIGHT, DOWN, LEFT, UP
         // Belum handling kasus harus bolak balik + deepclone nodePath : masih bitwise copy sepertinya
-        // Mekanisme 
-        // Normal Flow: TSP seperti biasa
-        // backAndForth Flow: TSP seperti biasa hingga ketemu node treasure tetapi udah dicek, pindah ke flow backAndForth
-        //                    stack dikosongkan dan disisakan satu saja, yaitu node treasure tetapi udah dicek wktu ganti mode
-        //                    Pengunjungan terhadap node yang sudah dikunjungi menjadi diperbolehkan dan TSP mencari treasure yang lain
-        //                    Hal ini masih mengandung bug saat ada 3 jalur bolak balik
 
-        //                    Maybe solved, dalam pikiranku, aku membayangkan setelah masuk backAndForth, batas maks dikunjungi itu jadi 2
-        //                    Sehingga tak perlu risaukan jika terjadi backAndForth Again, karena jalur yang akan dicari masih dalam satu route yang kontinu
         private List<char> path;
         private int numOfTreasures;
         private int numOfNodesVisited;
@@ -140,17 +132,6 @@ namespace lib
         private void cekTetangga(GraphNode currentNode, List<char> currentPath, List<GraphNode> currentNodePath, int currentRemainingTreasures)
         {
             int maxVisited = 1;
-            // if (backAndForth)
-            // {
-            //     maxVisited = 2;
-            // }
-            // else
-            // {
-            //     maxVisited = 1;
-            // }
-
-            // Tambahkan tetangga yang belum pernah visited ke dalam stack
-            // Pada stack, prioritas tertinggi ditambahkan terakhir
 
             // Tetangga Atas
             GraphNode upNeighbour = currentNode.getUp();
@@ -240,10 +221,6 @@ namespace lib
             List<GraphNode> tempNodePath = new List<GraphNode>();
 
             // Inisialisasi setelah ditemukannya treasure terakhir, stack dijamin tak kosong karena stack akhir dfs
-
-
-            // Console.WriteLine("X: " + this.stack.Peek().node.getValue().x.ToString() + " Y: " + this.stack.Peek().node.getValue().y);
-
             // Pengecekan tetangga untuk node treasure terakhir
             cekTetangga(this.stack.Peek().node, this.stack.Peek().path, this.stack.Peek().nodePath, this.stack.Peek().remainingTreasures);
 
@@ -262,22 +239,8 @@ namespace lib
 
                 // Buat seolah-olah start belum pernah dikunjungi
                 this.graph[0].setVisited(0);
-
-                // Console.WriteLine("=======");
-                // foreach (char dir in currentPath)
-                // {
-                //     Console.Write(dir);
-                // }
-                // Console.Write(" ");
-                // Console.WriteLine("X: " + currentNode.getCoordinate().x.ToString() + " Y: " + currentNode.getCoordinate().y);
-                // // Console.WriteLine("Last node before");
-                // // Console.WriteLine("X: " + currentNodePath[currentNodePath.Count - 1].getCoordinate().x.ToString() + " Y: " + currentNodePath[currentNodePath.Count - 1].getCoordinate().y);
-                // Console.Write("Backtracking: ");
-                Console.WriteLine(backtracking);
-                Console.WriteLine(this.stack.Count);
                 if (isStartNode(currentNode)) // Jika sudah kembali ke startNode
                 {
-                    // Console.WriteLine("Pernah masuk bang");
                     tempPath = currentPath;
                     this.visitedNodeSequence.Add(currentNode); // tambahkan ke visitedNodeSequence
                     currentNodePath.Add(currentNode);
@@ -380,8 +343,6 @@ namespace lib
                             this.stack.Peek().path = currentPath;
                             this.stack.Peek().nodePath = currentNodePath;
                             this.stack.Peek().remainingTreasures = currentRemainingTreasures;
-                            // Console.Write("Visited: ");
-                            // Console.WriteLine(currentNode.getVisited().ToString());
                             continue;
                         }
 
@@ -394,7 +355,6 @@ namespace lib
                         if (currentNode.isNeighbourVisitAbleExist())
                         {
                             // Pengecekan tetangga untuk node yang sedang dikunjungi
-                            // Console.WriteLine("Ko iyo ko");
                             cekTetangga(currentNode, currentPath, currentNodePath, currentRemainingTreasures);
                         }
                         else
@@ -421,11 +381,5 @@ namespace lib
             }
 
         }
-
-        // static void Main(string[] args)
-        // {
-        //     System.Console.WriteLine("TSP Algorithm!");
-
-        // }
     }
 }
